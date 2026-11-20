@@ -382,8 +382,12 @@ export function buildMech(build = BUILD_DEFAULT, palette = PALETTES.olive) {
   add(rifle, cylZ(0.07, 1.00, 12), 'metal', 0, 0.40, 2.70);
   add(rifle, cbox(0.20, 0.20, 0.36, 0.04), 'frame', 0, 0.40, 3.14);
   for (const s of [1, -1]) add(rifle, box(0.02, 0.08, 0.09), 'metal', s * 0.101, 0.40, 3.14);
-  add(rifle, cylX(0.23, 0.22, 14), 'armor2', 0, 0.06, 0.74);                                                       // the drum
-  add(rifle, cylX(0.10, 0.24, 8), 'frame', 0, 0.06, 0.74);
+  // the drum stands square to the barrel, its round faces toward the muzzle and the stock: the rounds in a drum lie along
+  // its axis, and they have to point where the gun points. (Until 2026-11-20 it lay the other way, its faces to the gun's sides.)
+  add(rifle, cylZ(0.25, 0.30, 16), 'armor2', 0, 0.02, 0.76);
+  add(rifle, cylZ(0.11, 0.32, 8), 'frame', 0, 0.02, 0.76);
+  add(rifle, cylZ(0.255, 0.05, 16), 'frame', 0, 0.02, 0.76);                                                        // the band round its middle
+  add(rifle, cbox(0.18, 0.12, 0.24, 0.02), 'frame', 0, 0.21, 0.76);                                                 // the neck that feeds the gun
   add(rifle, hull([[-0.10, 0.24, -0.44], [0.10, 0.24, -0.44], [-0.10, 0.56, -0.44], [0.10, 0.56, -0.44], [-0.08, 0.28, -1.00], [0.08, 0.28, -1.00], [-0.08, 0.52, -1.00], [0.08, 0.52, -1.00], [-0.08, 0.14, -0.92], [0.08, 0.14, -0.92]]), 'frame');
   add(rifle, box(0.08, 0.05, 1.20), 'frame', 0, 0.60, 0.30);
   add(rifle, cbox(0.15, 0.16, 0.44, 0.03), 'frame', 0, 0.70, 0.26);

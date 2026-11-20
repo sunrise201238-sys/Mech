@@ -41,7 +41,7 @@ The four numbers are `BUILD_DEFAULT` in `src/mech.js`. The paint is the first en
 ### The model
 
 - Rigid parts on a tree of 41 joints. There is no skin: a part never bends, it rides its joint.
-- 378 armour plates and parts. Each joint's parts are merged by material, which leaves 154 meshes and 12,172 triangles.
+- 380 armour plates and parts. Each joint's parts are merged by material, which leaves 154 meshes and 12,288 triangles.
 - It faces +Z, its own left is +X, and it stands on y = 0.
 - It is built in its own units and stood in the scene at a scale of 1.15. At the saved settings the head tops out near 5.8, the feet span 5.2 from edge to edge, and its tallest point reaches 7.1.
 - Shade is baked into the vertex colours: a tint for each panel, a fall of tone down each panel, and darkening where parts crowd each other.
