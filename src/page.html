@@ -1,4 +1,4 @@
-<title>ArchiveVS Mech Board</title>
+<title>Heavy Mech Board</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,13 +63,6 @@ input[type="range"]::-moz-range-thumb { width: 10px; height: 20px; background: v
 textarea { width: 100%; resize: none; border: 2px solid var(--ink); border-radius: 0; background: var(--paper); color: var(--ink); padding: 8px 10px; font: 600 14px/1.45 var(--ui); letter-spacing: .02em; }
 .stat { margin: 10px 0 0; font: 500 12.5px/1.7 var(--zh); color: var(--muted); }
 .stat span { white-space: nowrap; margin-right: .9em; }
-/* the data plate: what the first day's readme asked for, stamped the way a hull plate is */
-.plate { position: relative; background: var(--drab-deep); color: var(--sheet); padding: 18px 20px 14px; border: 2px solid var(--ink);
-  background-image: radial-gradient(circle at 10px 10px, #8E9480 0 3px, transparent 3.5px), radial-gradient(circle at calc(100% - 10px) 10px, #8E9480 0 3px, transparent 3.5px),
-    radial-gradient(circle at 10px calc(100% - 10px), #8E9480 0 3px, transparent 3.5px), radial-gradient(circle at calc(100% - 10px) calc(100% - 10px), #8E9480 0 3px, transparent 3.5px); }
-.plate .q { margin: 0; font: 400 17px/1.4 var(--stencil); letter-spacing: .03em; text-transform: uppercase; }
-.plate .src { margin: 9px 0 0; font: 500 12px/1.6 var(--zh); color: #C9CEB8; }
-
 body.bare .top, body.bare .panel, body.bare .now, body.bare .hint, body.bare .stage::after { display: none; }
 body.bare .wrap { padding: 0 !important; max-width: none; } body.bare .board { display: block; } body.bare .stage { height: 100vh; border: 0; }
 
@@ -120,10 +113,6 @@ body.bare .wrap { padding: 0 !important; max-width: none; } body.bare .board { d
         <textarea id="nums" readonly rows="2" aria-label="目前的數字"></textarea>
         <div class="line"><button type="button" id="copy" class="chip">複製</button></div>
         <p id="stat" class="stat"></p>
-      </section>
-      <section class="plate">
-        <p class="q">Bulky modular mech silhouette with active thruster plumes.</p>
-        <p class="src">2026 年 4 月 26 日的說明檔。這個專案第一天寫下的機體長相。</p>
       </section>
     </aside>
   </main>

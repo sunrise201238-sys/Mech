@@ -164,7 +164,10 @@ function frame() {
     if (state.motion === 'Dodge') x = 3.0 * smooth((u - 0.08) / 0.62);
     scrollZ += vz * dt; mech.root.position.y = y;
     scrollX = state.motion === 'Dodge' ? x : scrollX * Math.max(0, 1 - 8 * dt);
-    matTex.offset.set(0.156 + scrollX / TILE, (scrollZ / TILE) % 1);
+    // The mech faces +Z, so the ground has to pass toward -Z. Up the picture is -Z on the ground, and a rising offset slides
+    // the picture down it, which is +Z: so the offset falls as the mech goes forward. (It rose until 2026-11-20, and the mech
+    // looked as if it walked backwards.) Sideways the picture's own axis is the ground's, so the dodge needs no such turn.
+    matTex.offset.set(0.156 + scrollX / TILE, -(scrollZ / TILE) % 1);
     // the flames flicker a little whatever the motion says
     const fl = 1 + 0.07 * Math.sin(performance.now() * 0.06) + 0.05 * Math.sin(performance.now() * 0.143);
     mech.mats.flame.opacity = 0.62 * fl;

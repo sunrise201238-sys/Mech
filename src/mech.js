@@ -1,7 +1,7 @@
 // mech.js — a heavy military mech, squat and wide: slab armour over a dark frame, every plate a plain faceted solid, on a tree of joints.
 // No skin: every part is rigid and rides its joint. The model faces +Z, stands on y = 0, and its own left is +X.
-// It is built in its own units and stood in the scene at D.scale: the head then tops out near 6 (a unit of the game is 6.4),
-// the shoulder blocks a little above that, the rocket pod and the stowed cannon near 7.
+// It is built in its own units and stood in the scene at D.scale: at the default build the head then tops out near 5.8,
+// the shoulder blocks a little under that, the rocket pod and the stowed cannon near 7.
 import * as THREE from 'three';
 import { ConvexGeometry } from 'three/addons/geometries/ConvexGeometry.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
@@ -58,7 +58,7 @@ function stencilSheet(palette) {
   const ink = hex(palette.mark), hot = hex(palette.accent);
   const cut = (x, y, w, h, step) => { g.globalCompositeOperation = 'destination-out'; for (let i = x + step * 0.5; i < x + w; i += step) g.fillRect(i, y, 3, h); g.globalCompositeOperation = 'source-over'; };
   const word = (cell, text, size, step = 34) => { const [x, y, w, h] = CELLS[cell]; g.fillStyle = ink; g.font = `900 ${size}px "Arial Narrow", "Helvetica Neue", Arial, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(text, x + w / 2, y + h / 2 + 2, w - 12); cut(x, y, w, h, step); };
-  word('num', '03', 150, 46); word('serial', 'AV-098', 66); word('nostep', 'NO STEP', 60); word('danger', 'DANGER', 66); word('lift', 'LIFT', 60);
+  word('num', '03', 150, 46); word('serial', 'HM-03', 66); word('nostep', 'NO STEP', 60); word('danger', 'DANGER', 66); word('lift', 'LIFT', 60);
   { const [x, y, w, h] = CELLS.warn; g.strokeStyle = hot; g.lineWidth = 14; g.lineJoin = 'round'; g.beginPath(); g.moveTo(x + w / 2, y + 16); g.lineTo(x + w - 14, y + h - 18); g.lineTo(x + 14, y + h - 18); g.closePath(); g.stroke();
     g.fillStyle = hot; g.fillRect(x + w / 2 - 7, y + 60, 14, 46); g.fillRect(x + w / 2 - 7, y + 114, 14, 14); }
   { const [x, y, w, h] = CELLS.hazard; g.save(); g.beginPath(); g.rect(x, y, w, h); g.clip(); g.fillStyle = '#16181A'; g.fillRect(x, y, w, h); g.fillStyle = hot; for (let i = -h; i < w + h; i += 64) { g.beginPath(); g.moveTo(x + i, y + h); g.lineTo(x + i + 32, y + h); g.lineTo(x + i + 32 + h, y); g.lineTo(x + i + h, y); g.closePath(); g.fill(); } g.restore(); }
