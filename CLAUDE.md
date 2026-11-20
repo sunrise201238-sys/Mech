@@ -59,9 +59,12 @@ An answer, an assessment, an investigation, or anything that is not a change to 
 - Bulky means squat and wide: low hips, a broad stance, heavy slabs. The owner showed a picture for the feel of it:
   "By bulky i mean vibe somewhere like this."
 - Every design is original. A reference gives a feel. Nothing is copied from an existing machine, name or mark.
-- Heavy mech 03 stands at the settings the owner chose on the board on 2026-11-20: bulk 1.25, shoulders 0.81, legs 0.85,
-  head 1.12, olive paint, edge lines off, the tour off until its button is pressed. They are the defaults in `src/mech.js`
-  and `src/main.js`. Change a default only on the owner's word.
+- Heavy mech 03 stands at the look the owner chose on the board on 2026-11-20: in the model's own numbers bulk 1.25,
+  shoulders 0.81, legs 0.85, head 1.12, with olive paint, edge lines off, the tour off until its button is pressed.
+- The four build sliders, which the owner calls levers, read 1 at that look, on the owner's word the same day: "Set them
+  to 1 while keeping the current appearance." A slider shows a multiple of the look: `BUILD_BASE` in `src/mech.js` holds
+  the four numbers, `BUILD_DEFAULT` is the four ones, and `src/main.js` sets how far each slider travels. Change a default
+  only on the owner's word.
 - The serial stencilled on Heavy mech 03 reads `AV-098`. Keep it as it is, and do not explain it anywhere.
 - Two things were the wrong way round once, and the owner caught both: the ground under a walking mech must pass from its
   front to its back, and the gun's drum stands square to the barrel. Before saying a motion or a part is right, look at

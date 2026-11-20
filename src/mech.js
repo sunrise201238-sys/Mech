@@ -12,8 +12,10 @@ export const PALETTES = {
   desert: { label: '沙漠', armor: 0xB79E72, armor2: 0x8E7754, frame: 0x302D2A, metal: 0x79756D, accent: 0x7C2D1E, mark: 0x2E2A24, glow: 0x6FE3FF, edge: 0xE9DCBC },
   night: { label: '夜間', armor: 0x353A40, armor2: 0x24282C, frame: 0x16181A, metal: 0x4E5459, accent: 0xA6342A, mark: 0x9AA0A4, glow: 0xFF2E2E, edge: 0x7C858C },
 };
-// the build that was chosen on the board (2026-11-20): as bulky as the slider goes, narrow shoulders, short legs, a slightly larger head
-export const BUILD_DEFAULT = { bulk: 1.25, shoulders: 0.81, legs: 0.85, head: 1.12 };
+// The look that was chosen on the board (2026-11-20), in the model's own numbers: as bulky as the slider goes, narrow shoulders,
+// short legs, a slightly larger head. A build is given as multiples of this look, so every slider reads 1 at it.
+export const BUILD_BASE = { bulk: 1.25, shoulders: 0.81, legs: 0.85, head: 1.12 };
+export const BUILD_DEFAULT = { bulk: 1, shoulders: 1, legs: 1, head: 1 };
 
 // ------------------------------------------------------------ shapes
 const V3 = (p) => new THREE.Vector3(p[0], p[1], p[2]);
@@ -75,7 +77,8 @@ function seeded(a) { return () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Ma
 
 export function buildMech(build = BUILD_DEFAULT, palette = PALETTES.olive) {
   const P = { ...BUILD_DEFAULT, ...build };
-  const b = P.bulk, sh = P.shoulders, lg = P.legs, hd = P.head;
+  // the sliders' numbers turned back into the model's own: at 1 each is exactly the chosen look's number
+  const b = P.bulk * BUILD_BASE.bulk, sh = P.shoulders * BUILD_BASE.shoulders, lg = P.legs * BUILD_BASE.legs, hd = P.head * BUILD_BASE.head;
   const s1 = 0.72 + 0.28 * sh;                    // how far the shoulders stand out
   // sit: how far the hips rest below a straight leg's reach, since this machine always stands with its legs spread and bent
   const D = { footH: 0.50, L1: 1.30 * lg, L2: 1.50 * lg, hipX: 0.86 * (0.6 + 0.4 * b), hipDrop: 0.14, toe: 1.24, heel: 0.73, sit: 0.34, scale: 1.15 };

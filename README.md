@@ -24,19 +24,21 @@ Turn the mech, play its motions, change its paint and its build, in a browser, w
 
 ### The saved settings
 
-These were chosen on the board on 20 November 2026 and are the defaults.
+This look was chosen on the board on 20 November 2026 and is the default. The four build sliders read 1.00 at it.
 
 | Setting | Value |
 |---|---|
-| Bulk | 1.25 |
-| Shoulders | 0.81 |
-| Legs | 0.85 |
-| Head | 1.12 |
+| Bulk | 1.00 |
+| Shoulders | 1.00 |
+| Legs | 1.00 |
+| Head | 1.00 |
 | Paint | Olive |
 | Edge lines | Off |
 | Tour through the motions | Off |
 
-The four numbers are `BUILD_DEFAULT` in `src/mech.js`. The paint is the first entry of `PALETTES` in the same file. The board's sliders still move all four, and its paint buttons still offer slate, desert and night.
+A slider's number is a multiple of the chosen look. In the model's own numbers that look is bulk 1.25, shoulders 0.81, legs 0.85 and head 1.12, which is `BUILD_BASE` in `src/mech.js`; `BUILD_DEFAULT` in the same file is the four ones. The sliders travel as far as they did when they showed the model's own numbers, to the nearest step: bulk from 0.68 to 1.00, shoulders from 0.99 to 1.60, legs from 1.00 to 1.41, head from 0.72 to 1.16.
+
+The paint is the first entry of `PALETTES` in the same file. The board's sliders still move all four, and its paint buttons still offer slate, desert and night.
 
 ### The model
 

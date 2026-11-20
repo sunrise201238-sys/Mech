@@ -196,7 +196,9 @@ function ui() {
     b.addEventListener('click', () => { state.palette = key; setPalette(mech, PALETTES[key]); marks(); stats(); }); pa.append(b);
   }
   const sl = $('#sliders');
-  const rows = [['bulk', '粗壯', 0.85, 1.25], ['shoulders', '肩寬', 0.80, 1.30], ['legs', '腿長', 0.85, 1.20], ['head', '頭', 0.80, 1.30]];
+  // Every slider reads 1 at the saved look. Each travels as far as it did when the sliders showed the model's own numbers
+  // (until 2026-11-20), so its ends are the old ends divided by that look's number, to the nearest step inside them.
+  const rows = [['bulk', '粗壯', 0.68, 1.00], ['shoulders', '肩寬', 0.99, 1.60], ['legs', '腿長', 1.00, 1.41], ['head', '頭', 0.72, 1.16]];
   for (const [key, zh, lo, hi] of rows) {
     const row = document.createElement('label'); row.className = 'row';
     row.innerHTML = `<span>${zh}</span><input type="range" min="${lo}" max="${hi}" step="0.01" value="${state.build[key]}" data-build="${key}"><output>${state.build[key].toFixed(2)}</output>`;
