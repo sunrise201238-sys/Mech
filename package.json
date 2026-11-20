@@ -1,0 +1,20 @@
+{
+  "name": "mech",
+  "private": true,
+  "version": "0.3.0",
+  "type": "module",
+  "description": "Heavy mech 03: a squat, wide mech in slab armour, built from code, with eight motions",
+  "scripts": {
+    "build": "node build.mjs",
+    "glb": "node tools/glb.cjs model/heavy_mech_03.glb",
+    "check": "node tools/validate.mjs model/heavy_mech_03.glb",
+    "poster": "node tools/poster.cjs"
+  },
+  "dependencies": {
+    "three": "^0.179.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "gltf-validator": "^2.0.0-dev.3.10"
+  }
+}
