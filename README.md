@@ -4,13 +4,19 @@ Heavy mech 03. A squat, wide machine in slab armour, built entirely from code, w
 
 ![The eight motions](model/heavy_mech_03_poster.png)
 
+## The live board
+
+https://sunrise201238-sys.github.io/Mech/
+
+Turn the mech, play its motions, change its paint and its build, in a browser, with nothing to install. GitHub Pages serves it from this repository's `gh-pages` branch.
+
 ## What is here
 
 | Path | What it is |
 |---|---|
 | `model/heavy_mech_03.glb` | The model with its eight motions, at the saved settings |
 | `model/heavy_mech_03_poster.png` | A still of each motion |
-| `dist/index.html` | The board. Open it in a browser to turn the mech, play its motions, change its paint and its build |
+| `dist/index.html` | The board, built. The live address serves this file. It also opens straight from the folder |
 | `src/mech.js` | The model: every plate and part, and the joints they ride |
 | `src/anim.js` | The motions |
 | `src/main.js`, `src/page.html` | The board itself |
@@ -81,6 +87,12 @@ The tools need Playwright and a Chromium that can run WebGL. Run them from this 
 npm run glb      # writes model/heavy_mech_03.glb from the board's own exporter
 npm run check    # runs the glTF validator on it
 npm run poster   # shoots the eight stills and makes the poster
+```
+
+To put a new build on the live address, commit the fresh `dist/` and then publish it.
+
+```
+npm run pages    # puts the committed dist/ on the gh-pages branch, which GitHub Pages serves
 ```
 
 `tools/shot.cjs` takes still pictures of any motion from any side. `tools/extremes.cjs` builds the mech at the ends of its sliders to see that nothing breaks.

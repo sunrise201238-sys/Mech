@@ -8,7 +8,8 @@
     "build": "node build.mjs",
     "glb": "node tools/glb.cjs model/heavy_mech_03.glb",
     "check": "node tools/validate.mjs model/heavy_mech_03.glb",
-    "poster": "node tools/poster.cjs"
+    "poster": "node tools/poster.cjs",
+    "pages": "bash tools/pages.sh"
   },
   "dependencies": {
     "three": "^0.179.1"
