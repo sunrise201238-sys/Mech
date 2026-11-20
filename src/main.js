@@ -10,8 +10,7 @@ const $ = (s) => document.querySelector(s);
 document.documentElement.lang = 'zh-Hant';
 const q = new URLSearchParams(location.search);
 const LABEL = { Idle: '待機', Walk: '走路', Sprint: '衝刺', Shoot: '開槍', Cannon: '主砲', Dodge: '閃避', Jump: '跳躍', Win: '勝利' };
-const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const state = { motion: q.get('m') || 'Idle', speed: 1, palette: q.get('p') || 'olive', build: { ...BUILD_DEFAULT }, edges: false, fx: true, spin: false, paused: false, tour: !calm && !q.get('m') };
+const state = { motion: q.get('m') || 'Idle', speed: 1, palette: q.get('p') || 'olive', build: { ...BUILD_DEFAULT }, edges: false, fx: true, spin: false, paused: false, tour: false };     // the tour through the motions starts only when its button is pressed
 let tourAt = 0;
 
 // ------------------------------------------------------------ the stage

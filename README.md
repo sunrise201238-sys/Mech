@@ -34,6 +34,7 @@ These were chosen on the board on 20 November 2026 and are the defaults.
 | Head | 1.12 |
 | Paint | Olive |
 | Edge lines | Off |
+| Tour through the motions | Off |
 
 The four numbers are `BUILD_DEFAULT` in `src/mech.js`. The paint is the first entry of `PALETTES` in the same file. The board's sliders still move all four, and its paint buttons still offer slate, desert and night.
 
