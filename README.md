@@ -84,6 +84,7 @@ The glTF validator reports 0 errors and 0 warnings for the file. It has not been
 | `src/anim.js` | The motions |
 | `src/main.js`, `src/page.html` | The board itself |
 | `tools/` | Small scripts that write the model file, check it, make the poster and publish the board |
+| `CLAUDE.md` | The owner's working rules, which a coding session reads when it starts here |
 
 ## Building it
 
