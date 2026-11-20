@@ -36,7 +36,7 @@ This look was chosen on the board on 20 November 2026 and is the default. The fo
 | Edge lines | Off |
 | Tour through the motions | Off |
 
-A slider's number is a multiple of the chosen look. In the model's own numbers that look is bulk 1.25, shoulders 0.81, legs 0.85 and head 1.12, which is `BUILD_BASE` in `src/mech.js`; `BUILD_DEFAULT` in the same file is the four ones. The sliders travel as far as they did when they showed the model's own numbers, to the nearest step: bulk from 0.68 to 1.00, shoulders from 0.99 to 1.60, legs from 1.00 to 1.41, head from 0.72 to 1.16.
+A slider's number is a multiple of the chosen look. In the model's own numbers that look is bulk 1.25, shoulders 0.81, legs 0.85 and head 1.12, which is `BUILD_BASE` in `src/mech.js`; `BUILD_DEFAULT` in the same file is the four ones. Each slider has 1.00 in the middle of its travel and runs from 0.80 to 1.20. The mech holds together in all eight motions at the ends and the corners of that range.
 
 The paint is the first entry of `PALETTES` in the same file. The board's sliders still move all four, and its paint buttons still offer slate, desert and night.
 

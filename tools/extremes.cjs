@@ -6,8 +6,8 @@ const { chromium } = require('playwright'); const path = require('node:path');
   const errs = []; p.on('pageerror', (e) => errs.push(String(e))); p.on('console', (m) => { if (m.type() === 'error') errs.push(m.text()); });
   await p.goto('file://' + path.resolve('dist/index.html') + '?ui=0&m=Idle', { waitUntil: 'load' });
   await p.waitForFunction(() => window.__mb && window.__mb.motions, null, { timeout: 60000 });
-  // the ends of the sliders as src/main.js sets them: every slider reads 1 at the saved look
-  const sets = { lo: { bulk: 0.68, shoulders: 0.99, legs: 1.00, head: 0.72 }, hi: { bulk: 1.00, shoulders: 1.60, legs: 1.41, head: 1.16 }, mix1: { bulk: 1.00, shoulders: 0.99, legs: 1.41, head: 0.72 }, mix2: { bulk: 0.68, shoulders: 1.60, legs: 1.00, head: 1.16 } };
+  // the ends of the sliders as src/main.js sets them: every slider reads 1 at the saved look, in the middle of its travel
+  const sets = { lo: { bulk: 0.80, shoulders: 0.80, legs: 0.80, head: 0.80 }, hi: { bulk: 1.20, shoulders: 1.20, legs: 1.20, head: 1.20 }, mix1: { bulk: 1.20, shoulders: 0.80, legs: 1.20, head: 0.80 }, mix2: { bulk: 0.80, shoulders: 1.20, legs: 0.80, head: 1.20 } };
   for (const [k, v] of Object.entries(sets)) {
     const ms = await p.evaluate((bb) => { const t0 = performance.now(); window.__mb.build(bb); window.__mb.seek('Idle', 0.4); return performance.now() - t0; }, v);
     await p.waitForTimeout(300); await p.screenshot({ path: path.join(process.argv[2], 'x_' + k + '.png'), timeout: 240000 });
