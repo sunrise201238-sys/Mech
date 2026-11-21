@@ -63,8 +63,8 @@ function build(B, P) {
   // on the neck and holds the rest: a block each side, the left one carrying the aerial, and a block at the back.
   const head = joint('head', chest, 0, 1.10, 0.08);
   add(head, cbox(0.42 * hs, 0.25 * hs, 0.18 * hs, 0.02), 'frame', 0, 0.215 * hs, 0.24 * hs);
-  add(head, cbox(0.36 * hs, 0.22 * hs, 0.05 * hs, 0.015), 'metal', 0, 0.215 * hs, 0.345 * hs);                      // the eye's housing: a helmet closes right up to it
-  add(head, box(0.28 * hs, 0.15 * hs, 0.06 * hs), 'glow', 0, 0.215 * hs, 0.350 * hs);                               // the eye: one oblong pane
+  add(head, cbox(0.39 * hs, 0.235 * hs, 0.05 * hs, 0.015), 'metal', 0, 0.215 * hs, 0.345 * hs);                      // the eye's housing: a helmet closes right up to it
+  add(head, box(0.31 * hs, 0.165 * hs, 0.06 * hs), 'glow', 0, 0.215 * hs, 0.350 * hs);                               // the eye: one oblong pane
   for (const s of [1, -1]) add(head, cbox(0.11 * hs, 0.20 * hs, 0.30 * hs, 0.02), 'frame', s * 0.295 * hs, 0.20 * hs, -0.12 * hs);
   add(head, cbox(0.24 * hs, 0.16 * hs, 0.14 * hs, 0.02), 'frame', 0, 0.24 * hs, -0.46 * hs);
   const ant = joint('ant', head, -0.38 * hs, 0.30 * hs, -0.14 * hs, -0.55, 0, 0);

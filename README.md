@@ -43,7 +43,7 @@ The paint is the first entry of `PALETTES` in `src/bench.js`. The board's slider
 ### The model
 
 - Rigid parts on a tree of 43 joints. There is no skin: a part never bends, it rides its joint.
-- 394 armour plates and parts. Each joint's parts are merged by material, which leaves 164 meshes and 13,037 triangles.
+- 394 armour plates and parts. Each joint's parts are merged by material, which leaves 164 meshes and 13,029 triangles.
 - It faces +Z, its own left is +X, and it stands on y = 0.
 - It is built in its own units and stood in the scene at a scale of 1.15. At the saved settings the head tops out near 6.0, the feet span 5.2 from edge to edge, and its tallest point, the top of the folded cannon, reaches 7.5.
 - Shade is baked into the vertex colours: a tint for each panel, a fall of tone down each panel, and darkening where parts crowd each other.
@@ -63,7 +63,7 @@ The mech is put together from four layers of parts, each in its own file, and th
 | Weapons | 78 | The cannon, the missile pod, the shield and the rifle. Each can be taken off on its own, and each is bound to one of the frame's motions |
 | Motions | | The ten motions belong to the frame. A backpack or a weapon brings the part of a motion that is its own: the pack the burn of its thrusters, the cannon how it unfolds and kicks, the rifle its flash, the missile pod its salvo |
 
-The frame is kept light, since a game draws it under the armour all the time: on its own it is 3,012 triangles in 45 meshes, where the whole mech is 13,037 in 164. Under this armour it had nothing in its chest, its forearms or behind its calves, where the armour is the body. Six plain blocks join those places so the frame holds together to the eye: a spine from the waist to the neck, a yoke between the shoulder mounts, a bone in each forearm and a strut to each calf thruster. They are 72 triangles in all, with no joint and no mesh of their own. Each end is sunk into a part the frame already had, and the rest keeps clear of the armour's inner faces. In its armour the mech looks as it did: set beside pictures of the build before them, a picture changes by a few dozen pixels at most, at the edge of a shadow or in the gap under the chest when it leans back. The board's 骨架 button shows the frame alone.
+The frame is kept light, since a game draws it under the armour all the time: on its own it is 3,012 triangles in 45 meshes, where the whole mech is 13,029 in 164. Under this armour it had nothing in its chest, its forearms or behind its calves, where the armour is the body. Six plain blocks join those places so the frame holds together to the eye: a spine from the waist to the neck, a yoke between the shoulder mounts, a bone in each forearm and a strut to each calf thruster. They are 72 triangles in all, with no joint and no mesh of their own. Each end is sunk into a part the frame already had, and the rest keeps clear of the armour's inner faces. In its armour the mech looks as it did: set beside pictures of the build before them, a picture changes by a few dozen pixels at most, at the edge of a shadow or in the gap under the chest when it leans back. The board's 骨架 button shows the frame alone.
 
 Until 21 November 2026 all of this was one piece of code. The finishing pass tints each panel in the order it meets it, so the order the parts were made in is part of the look. `src/models/heavy_mech_03.js` keeps that order: every part that was there then comes out as it did, byte for byte, and what has been added since takes its place and its tint after them.
 
