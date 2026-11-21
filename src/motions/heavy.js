@@ -1,5 +1,6 @@
 // motions/heavy.js — the heavy frame's motions. Each motion is a function of time that poses the joints (the legs by reaching
-// for where a foot should be); anim.js samples it into plain keyframes. A weapon brings the part of a motion that is its own.
+// for where a foot should be); anim.js samples it into plain keyframes. A backpack or a weapon brings the part of a motion
+// that is its own.
 import * as THREE from 'three';
 
 const E = new THREE.Euler(), Q = new THREE.Quaternion(), Q2 = new THREE.Quaternion(), V = new THREE.Vector3(), MX = new THREE.Matrix4();
@@ -33,6 +34,23 @@ export function makeRig(mech) {
   };
   // a pose's own jolt of the shoulder shells: (pitch, roll outward) for the left, then the right. Call it before rig.arm.
   rig.pads = (lx = 0, lz = 0, rx = 0, rz = 0) => { rig.jolt.L = [lx, lz]; rig.jolt.R = [rx, rz]; };
+  // An arm turned until its forearm, and so whatever its hand holds, points along a line given in the root's space. The raise
+  // and the swing across the chest are found; the rest of the arm's pose is as given. Eight steps of Newton's method from
+  // the same start every time, so a motion bakes to the same keys however often it is baked.
+  const aimQ = new THREE.Quaternion(), aimV = new THREE.Vector3();
+  rig.aim = (n, pose, line) => {
+    let fwd = 1.2, across = 0.5;
+    const turn = Math.atan2(line[0], line[2]), rise = Math.atan2(line[1], Math.hypot(line[0], line[2]));
+    const off = (f, c) => { rig.arm(n, { ...pose, fwd: f, across: c }); J['fore' + n].getWorldQuaternion(aimQ); aimV.set(0, -1, 0).applyQuaternion(aimQ);
+      return [Math.atan2(aimV.x, aimV.z) - turn, Math.atan2(aimV.y, Math.hypot(aimV.x, aimV.z)) - rise]; };
+    for (let i = 0; i < 8; i += 1) {
+      const e = off(fwd, across), h = 1e-3, ef = off(fwd + h, across), ec = off(fwd, across + h);
+      const a = (ef[0] - e[0]) / h, b = (ec[0] - e[0]) / h, c = (ef[1] - e[1]) / h, d = (ec[1] - e[1]) / h, det = a * d - b * c;
+      if (Math.abs(det) < 1e-9) break;
+      fwd += clamp((b * e[1] - d * e[0]) / det, -0.4, 0.4); across += clamp((c * e[0] - a * e[1]) / det, -0.4, 0.4);
+    }
+    rig.arm(n, { ...pose, fwd, across });
+  };
   // a leg: its ankle put at (x, y, z) in the root's space, the foot pitched (toes down is positive) and turned (yaw)
   const hipQ = new THREE.Quaternion(), inv = new THREE.Quaternion(), hipPos = new THREE.Vector3(), n = new THREE.Vector3(), f = new THREE.Vector3(),
     fp = new THREE.Vector3(), td = new THREE.Vector3(), xa = new THREE.Vector3(), ya = new THREE.Vector3(), za = new THREE.Vector3();
@@ -66,11 +84,12 @@ export function makeRig(mech) {
     }
     rig.rot('skirtB', Math.max(0, -Math.min(rig.flex.L, rig.flex.R)) * 0.75, 0, 0);
   };
-  rig.whip = (x = 0, z = 0) => { rig.rot('ant', x, 0, z); rig.rot('mast', x * 0.8, 0, z * 0.8); };
-  rig.flame = (v) => { for (const k of ['L', 'R']) J['flame' + k].scale.set(0.8 + 0.2 * Math.min(v, 1.5), Math.max(v, 0.001), 0.8 + 0.2 * Math.min(v, 1.5)); };
+  rig.whip = (x = 0, z = 0) => { rig.rot('ant', x, 0, z); };
   rig.calf = (v) => { for (const k of ['L', 'R']) J['flameC' + k].scale.set(1, Math.max(v, 0.001), 1); };
-  // what each weapon does in a motion comes from the weapon
-  for (const w of mech.model.weapons) if (w.drive) w.drive(rig);
+  // What a backpack or a weapon does in a motion comes from it. A frame that carries none goes through the motion without:
+  // the main thrusters' burn, the gun's flash and the cannon's swing are then nothing at all.
+  rig.flame = rig.flash = rig.cannon = () => {};
+  for (const g of mech.gear) if (g.drive) g.drive(rig);
   return rig;
 }
 
@@ -135,13 +154,17 @@ export const MOTIONS = {
   Shoot: { dur: 0.6, loop: true, pose(rig, u) {
     // three heavy shots a loop: a shot is six frames at 30 a second, so every shot bakes to the same kick and the same flash
     const D = rig.D, r = (u * 3) % 1, k = Math.exp(-r * 6.5), fl = Math.max(0, 1 - r * 5);
-    rig.hips(0, -0.08, -0.07 * k, 0.06 - 0.03 * k, -0.26, 0);
-    rig.rot('spine', 0.03, -0.08, 0); rig.rot('chest', 0.02 - 0.045 * k, -0.06, 0);
-    rig.rot('head', 0.02 - 0.03 * k, 0.36, 0, 'YXZ');
-    rig.pads(0, 0, 0, 0.07 * k);
-    rig.arm('R', { fwd: 1.50 - 0.07 * k, across: 0.42, elbow: 0.18 + 0.17 * k });
-    rig.arm('L', { fwd: 0.50, out: 0.26, across: 0.16, elbow: 1.10, roll: -0.2 });
-    rig.leg('L', D.stance + 0.04, D.footH, 0.50, 0, 0.26, 0.25); rig.leg('R', -(D.stance + 0.08), D.footH, -0.44, 0, -0.50, 0.25);
+    // Braced to take the gun's kick: side on with the left shoulder to the target, low and leaning into the shot, the back foot
+    // turned out behind. Each shot pushes the hips back and down and rocks the chest; the stance gives, then comes forward again.
+    rig.hips(0.05, -0.34 - 0.04 * k, 0.12 - 0.18 * k, 0.20 - 0.07 * k, -0.50, 0);
+    rig.rot('spine', 0.08, -0.10, 0); rig.rot('chest', 0.06 - 0.06 * k, -0.08, 0);
+    rig.rot('head', -0.30, 0.66, 0, 'YXZ');
+    rig.pads(0, 0, 0, 0.09 * k);
+    // the gun stays on its line whatever the body does under it; the kick folds the elbow and lifts the muzzle a little
+    rig.aim('R', { out: 0.10, elbow: 0.55 + 0.24 * k }, [0, 0.05 * k, 1]);
+    // the shield held across the chest, the gun past its edge
+    rig.arm('L', { fwd: 1.05, out: 0.10, across: 0.55, elbow: 1.25, roll: -0.3 });
+    rig.leg('L', D.stance + 0.02, D.footH, 0.90, 0, 0.15, 0.25); rig.leg('R', -(D.stance + 0.16), D.footH, -0.80, 0, -0.85, 0.25);
     rig.whip(-0.22 * k, 0.05 * k); rig.flash(fl > 0 ? 0.6 + 0.6 * fl : 0); rig.flame(0); rig.skirts();
   } },
 
@@ -163,7 +186,7 @@ export const MOTIONS = {
     rig.cannon(dep, unf, 0.46 * kick, fl); rig.skirts();
   } },
 
-  Dodge: { dur: 0.6, loop: false, pose(rig, u) {
+  Dodge: { dur: 1.0, loop: false, pose(rig, u) {
     const D = rig.D, a = ramp(u, 0, 0.16), b = ramp(u, 0.10, 0.40), c = ramp(u, 0.62, 1.0), lean = b - c;
     rig.hips(0.34 * lean, -0.06 - 0.22 * Math.sin(Math.PI * clamp(u / 0.92, 0, 1)), 0, 0.10 * lean, -0.10, -0.30 * lean);
     rig.rot('spine', 0, 0, -0.10 * lean); rig.rot('chest', 0.05 * lean, 0.10 * lean, -0.08 * lean);
@@ -175,6 +198,20 @@ export const MOTIONS = {
     rig.leg('R', -(D.stance + 0.08) + 0.34 * lean, D.footH + 0.34 * lean * (1 - a * 0.2), -0.22 - 0.06 * lean, 0.45 * lean, -0.34, 0.25);
     const burst = Math.sin(Math.PI * ramp(u, 0.06, 0.66));
     rig.whip(0.05 * lean, 0.55 * (ramp(u, 0.08, 0.30) - ramp(u, 0.45, 0.80)) - 0.25 * Math.sin(Math.PI * ramp(u, 0.70, 1.0))); rig.flame(1.3 * burst); rig.calf(0.85 * burst); rig.skirts();
+  } },
+
+  Guard: { dur: 2.4, loop: true, pose(rig, u) {
+    // Behind the shield: side on and low as for a shot, the shield stood up in front of the chest and the head, the gun held
+    // low beside it, still on the target. It holds there and breathes: a stance to stay in for as long as the blows keep coming.
+    const D = rig.D, b = Math.sin(TAU * u), b2 = Math.sin(TAU * u + 1.2);
+    rig.hips(0.04, -0.40 - 0.02 * (0.5 - 0.5 * Math.cos(TAU * u)), 0.04, 0.14, -0.70, 0);
+    rig.rot('spine', 0.06 + 0.01 * b, -0.10, 0); rig.rot('chest', 0.06 + 0.01 * b, -0.08, 0);
+    rig.rot('head', -0.10, 0.82 + 0.05 * b2, 0, 'YXZ');
+    rig.pads(0, 0.012 * b, 0, 0.012 * b);
+    rig.arm('L', { fwd: 1.45 + 0.02 * b, across: 0.90, elbow: 1.90, roll: -0.2 });
+    rig.aim('R', { out: 0.12, elbow: 0.95 + 0.02 * b2 }, [0, -0.28, 1]);
+    rig.leg('L', D.stance, D.footH, 0.85, 0, 0.10, 0.25); rig.leg('R', -(D.stance + 0.20), D.footH, -0.78, 0, -0.90, 0.25);
+    rig.whip(0.03 * b2, 0.02 * b); rig.flame(0); rig.skirts();
   } },
 
   Jump: { dur: 1.5, loop: false, pose(rig, u) {

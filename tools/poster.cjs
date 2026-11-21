@@ -1,8 +1,9 @@
-// poster.cjs — eight stills of the motions and the poster made of them: shots/poster/*.png, then model/heavy_mech_03_poster.png.
+// poster.cjs — a still of each motion and the poster made of them: shots/poster/*.png, then model/heavy_mech_03_poster.png.
 // Run it from the repository's root, after `npm run build`.
 const { chromium } = require('playwright'); const path = require('node:path'); const fs = require('node:fs');
-const STILLS = [['1_Idle', 'Idle', 0.4, -30, 9, 19], ['2_Walk', 'Walk', 0.3, 32, 8, 19.5], ['3_Sprint', 'Sprint', 0.3, -60, 8, 21.5], ['4_Shoot', 'Shoot', 0.0, -52, 7, 23],
-  ['5_Cannon', 'Cannon', 1.435, -76, 6, 23], ['6_Dodge', 'Dodge', 0.27, 20, 9, 20], ['7_Jump', 'Jump', 0.72, -30, 7, 20], ['8_Win', 'Win', 2.3, -28, 8, 20]];   // name, motion, time, turn, tilt, distance
+const STILLS = [['1_Idle', 'Idle', 0.4, -30, 9, 19], ['2_Walk', 'Walk', 0.3, 32, 8, 19.5], ['3_Sprint', 'Sprint', 0.3, -60, 8, 21.5], ['4_Shoot', 'Shoot', 0.0, -40, 7, 22.5],
+  ['5_Cannon', 'Cannon', 1.435, -76, 6, 23], ['6_Dodge', 'Dodge', 0.45, 20, 9, 20], ['7_Guard', 'Guard', 0.6, -30, 8, 20], ['8_Jump', 'Jump', 0.72, -30, 7, 20],
+  ['9_Win', 'Win', 2.3, -28, 8, 20]];   // name, motion, time, turn, tilt, distance
 (async () => {
   fs.mkdirSync('shots/poster', { recursive: true });
   const b = await chromium.launch({ args: ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });

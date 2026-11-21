@@ -7,7 +7,7 @@ import { hull, ring, loft, cbox, tile, oct, box, cylY, hexX, hexZ } from '../ben
 function build(B, F) {
   const { J, add, mark, markOn, partOn, boltsOn, face, lay, seam, layMark } = B;
   const { b, sh, cw, L1, L2, hs, keel } = F;
-  const { hips, spine, chest, head, pack } = J;
+  const { hips, spine, chest, head } = J;
 
   // ------------------------------------------------------------ hips: the belt, the cap over the block between the legs, the skirt plates
   add(hips, loft(ring(0.20, 1.72 * b, 1.12, 0.20), ring(0.44, 1.30 * b, 0.86, 0.16)), 'armor');                  // the belt, sloped all round
@@ -78,9 +78,6 @@ function build(B, F) {
     H(-0.20, 0.46, -0.34), H(0.20, 0.46, -0.34), H(-0.17, 0.44, 0.06), H(0.17, 0.44, 0.06)]), 'armor');
   add(head, hull([H(-0.15, -0.02, 0.14), H(0.15, -0.02, 0.14), H(-0.12, -0.02, 0.36), H(0.12, -0.02, 0.36), H(-0.18, 0.07, 0.16), H(0.18, 0.07, 0.16), H(-0.16, 0.07, 0.42), H(0.16, 0.07, 0.42)]), 'armor2');
   add(head, cbox(0.10 * hs, 0.06 * hs, 0.46 * hs, 0.02), 'armor2', 0, 0.47 * hs, -0.14 * hs);
-
-  // ------------------------------------------------------------ the pack's top plate
-  add(pack, loft(ring(0.47, 1.08 * b, 0.46, 0.06, 0, -0.26), ring(0.57, 0.86 * b, 0.30, 0.05, 0, -0.24)), 'armor');
 
   // ------------------------------------------------------------ shoulder blocks, and the plates of the arms
   for (const s of [1, -1]) {

@@ -9,9 +9,14 @@ anything written here.
 - "This repo's solely purpose will be storing mech models for any future use."
 - The plan, as the owner gave it on 2026-11-20: build more mech models over time, then make a new mech game.
 - The plan grew on 2026-11-21: "multiple skeleton frames, at least 3. Each of them uses their own motions, and their own
-  armor&weapon lines choices." Every frame has the same eight motions: "Must have this eight". Armour and weapon lines
-  "will have universal and excluded": some for every frame, some for one. Every frame keeps all four build sliders. Which
-  frames and how the files are stored are open: "We'll see". How the board shows them is left to the session: "i don't care".
+  armor&weapon lines choices." Every frame has the same eight motions: "Must have this eight". A ninth, Guard, was added
+  the same day: "add a defense(guarding) motion." Armour and weapon lines "will have universal and excluded": some for
+  every frame, some for one. Every frame keeps all four build sliders. Which frames and how the files are stored are open:
+  "We'll see". How the board shows them is left to the session: "i don't care".
+- A backpack is a layer of its own: "Backpack should not be integrated with frame. There will be tons of backpack in the
+  future."
+- A frame is kept light: "the principal is to keep the whole frame stuff light weighted. I don't want it to use up much
+  resource when put the mech into game or smth." What joins a frame's pieces to the eye is plain, and hidden under the armour.
 - It stands alone. Do not name or describe the owner's other projects anywhere in it.
 - `main` holds the models, their source and the built board. `gh-pages` holds only the built board, which GitHub Pages
   serves at https://sunrise201238-sys.github.io/Mech/ . Nothing writes to `gh-pages` but `tools/pages.sh`.
@@ -71,6 +76,9 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   numbers, `BUILD_DEFAULT` in `src/bench.js` is the four ones, and `src/main.js` sets how far each slider travels.
   Change a default only on the owner's word.
 - The serial stencilled on Heavy mech 03 reads `AV-098`. Keep it as it is, and do not explain it anywhere.
+- A motion has to look as if the machine means it. Of the first firing pose the owner said: "looks dumb; like it's standing
+  still without any recoil absorbing stance or tactical posing." They picked a braced stance, side on behind the shield.
+  Dodge lasts one second on the owner's word: "dodge motion needs to last for 1sec".
 - Two things were the wrong way round once, and the owner caught both: the ground under a walking mech must pass from its
   front to its back, and the gun's drum stands square to the barrel. Before saying a motion or a part is right, look at
   renders of it from the side and from above.

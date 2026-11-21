@@ -9,8 +9,8 @@ import { bakeAll } from './anim.js';
 const $ = (s) => document.querySelector(s);
 document.documentElement.lang = 'zh-Hant';
 const q = new URLSearchParams(location.search);
-const LABEL = { Idle: '待機', Walk: '走路', Sprint: '衝刺', Shoot: '開槍', Cannon: '主砲', Dodge: '閃避', Jump: '跳躍', Win: '勝利' };
-const state = { motion: q.get('m') || 'Idle', speed: 1, palette: q.get('p') || 'olive', build: { ...BUILD_DEFAULT }, edges: false, fx: true, spin: false, paused: false, tour: false };     // the tour through the motions starts only when its button is pressed
+const LABEL = { Idle: '待機', Walk: '走路', Sprint: '衝刺', Shoot: '開槍', Cannon: '主砲', Dodge: '閃避', Guard: '防禦', Jump: '跳躍', Win: '勝利' };
+const state = { motion: q.get('m') || 'Idle', speed: 1, palette: q.get('p') || 'olive', build: { ...BUILD_DEFAULT }, edges: false, fx: true, spin: false, paused: false, tour: false, frame: q.get('frame') === '1' };     // the tour through the motions starts only when its button is pressed
 let tourAt = 0;
 
 // ------------------------------------------------------------ the stage
@@ -88,7 +88,7 @@ const holder = new THREE.Group(); scene.add(holder);
 function rebuild() {
   const keep = current ? current.time : 0;
   if (mech) { holder.remove(mech.root); mech.root.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); if (mech.mats.decal.map) mech.mats.decal.map.dispose(); }
-  mech = buildMech(state.build, PALETTES[state.palette]);
+  mech = buildMech(state.build, PALETTES[state.palette], { frameOnly: state.frame });     // the frame alone, or the whole mech
   mech.root.traverse((o) => { if (o.isMesh && o.userData.fx) o.castShadow = false; });
   holder.add(mech.root);
   const baked = bakeAll(mech); clips = baked.clips;
@@ -197,7 +197,7 @@ function ui() {
   }
   const sl = $('#sliders');
   // Every slider reads 1 at the saved look and has it in the middle of its travel: a fifth less to a fifth more. The mech was
-  // looked at in all eight motions at the ends and the corners of this range (2026-11-20) and holds together there. A step
+  // looked at in all its motions at the ends and the corners of this range and holds together there. A step
   // further it does not: at 0.70 the legs are swallowed by their own armour and the shoulder blocks shrink off their mounts.
   const rows = [['bulk', '粗壯', 0.80, 1.20], ['shoulders', '肩寬', 0.80, 1.20], ['legs', '腿長', 0.80, 1.20], ['head', '頭', 0.80, 1.20]];
   for (const [key, zh, lo, hi] of rows) {
@@ -209,9 +209,9 @@ function ui() {
   }
   const sp = $('#speed'), spo = $('#speedOut');
   sp.addEventListener('input', () => { state.speed = Number(sp.value); spo.textContent = state.speed.toFixed(2); });
-  for (const key of ['edges', 'fx', 'spin', 'tour']) {
+  for (const key of ['edges', 'fx', 'spin', 'tour', 'frame']) {
     const b = $(`[data-toggle="${key}"]`);
-    b.addEventListener('click', () => { state[key] = !state[key]; applyToggles(); marks(); if (key === 'tour' && state.tour) play(state.motion, 0); });
+    b.addEventListener('click', () => { state[key] = !state[key]; if (key === 'frame') rebuild(); applyToggles(); marks(); if (key === 'tour' && state.tour) play(state.motion, 0); });
   }
   $('#reset').addEventListener('click', () => {
     state.build = { ...BUILD_DEFAULT };
@@ -227,7 +227,7 @@ function ui() {
 }
 function marks() {
   for (const b of document.querySelectorAll('[data-palette]')) b.classList.toggle('on', b.dataset.palette === state.palette);
-  for (const key of ['edges', 'fx', 'spin', 'tour']) $(`[data-toggle="${key}"]`).classList.toggle('on', state[key]);
+  for (const key of ['edges', 'fx', 'spin', 'tour', 'frame']) $(`[data-toggle="${key}"]`).classList.toggle('on', state[key]);
   $('#pause').classList.toggle('on', state.paused); $('#pause').textContent = state.paused ? '繼續' : '暫停';
 }
 

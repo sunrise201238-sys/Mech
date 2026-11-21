@@ -164,14 +164,17 @@ export function bench(palette) {
 // The finishing pass. A model may carry a record of the order its joints and parts were first made in: the pass tints the
 // panels in the order it meets them and the model file is written in that order too, so a mech whose layers are built one
 // after another is first put back into its recorded order, and comes out exactly as it did when it was one piece of code.
+// A part marked hollow takes shade from its neighbours and gives none: the lifting eyes, which are rings, and the plain
+// blocks that join a frame's pieces, which must leave the look of everything round them alone.
 export function finish(B, record = {}) {
   const { root, M, made } = B; let J = B.J;
+  const late = new Set();                                    // what was added since the record was taken
   if (record.order) for (const name in J) {
-    const pattern = record.order[name]; if (!pattern) continue;
+    const pattern = record.order[name] || '';
     const g = J[name], queue = {}, out = [];
     for (const c of g.children) (queue[made.get(c)] = queue[made.get(c)] || []).push(c);
     for (const tag of pattern) { const c = queue[tag] && queue[tag].shift(); if (c) out.push(c); }
-    for (const tag in queue) out.push(...queue[tag]);
+    for (const tag in queue) for (const c of queue[tag]) { out.push(c); late.add(c); }
     g.children = out;
   }
   if (record.joints) { const K = {}; for (const n of record.joints) if (J[n]) K[n] = J[n]; for (const n in J) if (!K[n]) K[n] = J[n]; J = B.J = K; }
@@ -204,7 +207,8 @@ export function finish(B, record = {}) {
     return true;
   };
   const REACH = [[0.09, 0.45], [0.24, 0.33], [0.46, 0.22]];
-  for (const o of solids) {
+  // the recorded parts take their tints first, in their order, so a part added since never shifts the tint of an older one
+  for (const o of [...solids.filter((q) => !late.has(q.m)), ...solids.filter((q) => late.has(q.m))]) {
     const m = o.m, key = m.userData.key, geo = m.geometry, pos = geo.attributes.position, nor = geo.attributes.normal, n = pos.count;
     const col = new Float32Array(n * 3), painted = PAINTED[key];
     const tint = painted ? 0.90 + 0.10 * rnd() : 0.94 + 0.06 * rnd();

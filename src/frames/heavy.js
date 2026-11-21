@@ -1,7 +1,8 @@
 // frames/heavy.js — the heavy frame: a squat, wide two-legged machine. A frame is the skeleton and everything a mech keeps
-// whatever it wears: the joints and their sizes, the dark inner structure, the hinges its armour hangs from, its thrusters and
-// aerials, and what its four build sliders do. Its motions are in motions/heavy.js. It is built in its own units and stood
-// in the scene at D.scale: at the chosen look the head then tops out near 5.8.
+// whatever it wears or carries: the joints and their sizes, the dark inner structure, the hinges its armour hangs from, the
+// place on its back where a backpack hangs, the thrusters on its calves, its aerial, and what its four build sliders do.
+// Its motions are in motions/heavy.js. It is built in its own units and stood in the scene at D.scale: at the chosen look
+// the head then tops out near 5.8. A frame is kept light: it is drawn under the armour all the time.
 import { hull, ring, loft, cbox, box, cylY, cylZ, hexX, hexY, plume } from '../bench.js';
 import * as motions from '../motions/heavy.js';
 
@@ -10,7 +11,7 @@ import * as motions from '../motions/heavy.js';
 export const BUILD_BASE = { bulk: 1.25, shoulders: 0.81, legs: 0.85, head: 1.12 };
 
 function build(B, P) {
-  const { root, M, joint, add, glowAdd } = B;
+  const { root, J, M, joint, add, glowAdd } = B;
   // the sliders' numbers turned back into the model's own: at 1 each is exactly the chosen look's number
   const b = P.bulk * BUILD_BASE.bulk, sh = P.shoulders * BUILD_BASE.shoulders, lg = P.legs * BUILD_BASE.legs, hd = P.head * BUILD_BASE.head;
   const s1 = 0.72 + 0.28 * sh;                    // how far the shoulders stand out
@@ -64,25 +65,6 @@ function build(B, P) {
   add(ant, hull([[-0.014, 0, -0.07], [0.014, 0, -0.07], [-0.014, 0, 0.07], [0.014, 0, 0.07], [-0.008, 0.70, -0.02], [0.008, 0.70, -0.02], [-0.008, 0.65, 0.035], [0.008, 0.65, 0.035]]), 'armor2');
   add(ant, hexX(0.05, 0.06, 6), 'metal', 0, 0, 0);
 
-  // ------------------------------------------------------------ the pack: two main thrusters and a whip aerial. Weapons mount on it
-  const pack = joint('pack', chest, 0, 0.52, -0.60);
-  add(pack, hull([...ring(-0.46, 1.10 * b, 0.44, 0.06, 0, -0.28), ...ring(0.24, 1.28 * b, 0.62, 0.08, 0, -0.32), ...ring(0.48, 1.06 * b, 0.42, 0.06, 0, -0.26)]), 'frame');
-  for (let i = 0; i < 5; i += 1) add(pack, box(0.52 * b, 0.03, 0.05), 'metal', 0, -0.18 + i * 0.085, -0.625);
-  for (const s of [1, -1]) {
-    const n = s > 0 ? 'L' : 'R';
-    const th = joint('thr' + n, pack, s * 0.38 * b, -0.44, -0.38, 0.60, 0, 0);
-    add(th, loft(ring(0.14, 0.50, 0.50, 0.09), ring(-0.16, 0.64, 0.64, 0.12)), 'armor2');
-    add(th, cylY(0.19, 0.32, 0.40, 14), 'metal', 0, -0.34, 0);
-    add(th, cylY(0.25, 0.25, 0.02, 14), 'burn', 0, -0.525, 0);
-    const fl = joint('flame' + n, th, 0, -0.54, 0);
-    glowAdd(fl, plume(0.27, 1.8), M.flame); glowAdd(fl, plume(0.13, 1.1, 10), M.core);
-    fl.scale.set(1, 0.001, 1);
-  }
-  // a whip aerial
-  const mast = joint('mast', pack, 0.20 * b, 0.56, -0.44, -0.14, 0, -0.04);
-  add(mast, cylY(0.03, 0.035, 0.12, 8), 'frame', 0, 0.06, 0);
-  add(mast, cylY(0.008, 0.016, 1.45, 6), 'metal', 0, 0.85, 0);
-
   // ------------------------------------------------------------ shoulders and arms
   for (const s of [1, -1]) {
     const n = s > 0 ? 'L' : 'R';
@@ -127,8 +109,24 @@ function build(B, P) {
     for (const t of [1, -1]) add(ft, hull([[t * 0.12 * b, -0.50, -0.52], [t * 0.40 * b, -0.50, -0.52], [t * 0.14 * b, -0.50, -0.73], [t * 0.36 * b, -0.50, -0.73], [t * 0.14 * b, -0.22, -0.54], [t * 0.38 * b, -0.22, -0.54], [t * 0.16 * b, -0.34, -0.73], [t * 0.34 * b, -0.34, -0.73]]), 'frame');   // two heel spurs
   }
 
-  // what the other layers build on: the sizes the sliders came to, and the block between the legs, which armour is laid on
-  return { P, b, sh, lg, hd, s1, cw, L1, L2, hs, D, keel };
+  // ------------------------------------------------------------ what joins the frame's pieces together
+  // Under this armour the frame had nothing in the chest, the forearms or behind the calves: the armour is the body there.
+  // Plain blocks fill those places so the frame holds together to the eye: a spine from the waist to the neck, a yoke
+  // between the shoulder mounts, a bone in each forearm, a strut to each calf thruster. They are for looks alone and light:
+  // twelve triangles each, no joint and no mesh of their own. Each end is sunk into a part the frame already had, and in
+  // between a block keeps well clear of the armour's inner faces, so none of it shows on a mech in its armour. They are
+  // made last and marked hollow: they take no tint from an older part and shade none.
+  const fill = (m) => { m.userData.hollow = true; return m; };
+  fill(add(chest, loft(ring(-0.10, 0.44, 0.44), ring(1.05, 0.16, 0.16, 0, 0, 0.06)), 'frame'));                    // the spine
+  fill(add(chest, box(1.80 * cw - 0.12, 0.32, 0.48), 'frame', 0, 0.68, 0));                                         // the yoke
+  for (const n of ['L', 'R']) {
+    fill(add(J['fore' + n], loft(ring(-0.14, 0.26, 0.26), ring(-1.06, 0.20, 0.20)), 'frame'));                     // elbow to wrist
+    fill(add(J['shin' + n], box(0.16, 0.12, 0.42), 'frame', 0, -L2 * 0.70 + 0.02, -0.43));                         // shin to thruster
+  }
+
+  // what the other layers build on: the sizes the sliders came to, the block between the legs, which armour is laid on,
+  // and the place on the chest's back where a backpack hangs
+  return { P, b, sh, lg, hd, s1, cw, L1, L2, hs, D, keel, back: [0, 0.52, -0.60] };
 }
 
 export const heavy = { name: 'heavy', base: BUILD_BASE, build, motions };
