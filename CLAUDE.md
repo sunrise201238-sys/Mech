@@ -78,7 +78,8 @@ An answer, an assessment, an investigation, or anything that is not a change to 
 - The serial stencilled on Heavy mech 03 reads `AV-098`. Keep it as it is, and do not explain it anywhere.
 - A motion has to look as if the machine means it. Of the first firing pose the owner said: "looks dumb; like it's standing
   still without any recoil absorbing stance or tactical posing." They picked a braced stance, side on behind the shield.
-  Dodge lasts one second on the owner's word: "dodge motion needs to last for 1sec".
+  Dodge lasts one second on the owner's word: "dodge motion needs to last for 1sec". For Guard they picked, out of four
+  that were tried, the one that keeps the shield across the chest as for a shot and lets the gun down at the side.
 - Two things were the wrong way round once, and the owner caught both: the ground under a walking mech must pass from its
   front to its back, and the gun's drum stands square to the barrel. Before saying a motion or a part is right, look at
   renders of it from the side and from above.
@@ -90,6 +91,8 @@ An answer, an assessment, an investigation, or anything that is not a change to 
 - The tools drive a headless Chromium through Playwright and draw WebGL in software, which is slow. Take a screenshot with
   `timeout: 240000`, keep at most two pages open at once, and never wait with a bare `sleep`.
 - A picture a person will look at is taken at `deviceScaleFactor: 2`.
+- A change does not have to leave a picture the same pixel for pixel: "We don't need to be pixel precision." Looking
+  the same to the eye is enough.
 - After a change to a model or to the board: build, look at renders, run `npm run glb` and `npm run check`, remake the
   poster if the look changed, and bring the README's numbers up to date. The model file has had 0 errors and 0 warnings
   from the validator so far.

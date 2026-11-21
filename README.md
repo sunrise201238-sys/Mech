@@ -76,7 +76,7 @@ Until 21 November 2026 all of this was one piece of code. The finishing pass tin
 | Shoot | 0.6 s | Loops | Three shots from a braced stance, side on behind the shield, each with its kick |
 | Cannon | 2.8 s | Once | The cannon swings over the shoulder, the barrel swings out, it fires, it folds away |
 | Dodge | 1.0 s | Once | A boosted lunge to the side |
-| Guard | 2.4 s | Loops | Behind the raised shield, low and side on, the gun held ready |
+| Guard | 2.4 s | Loops | Behind the shield held across the chest, low and side on, the gun let down at the side |
 | Jump | 1.5 s | Once | Crouch, rise on the thrusters, land |
 | Win | 2.6 s | Once | Stands up, brings the gun up beside the head |
 

@@ -201,15 +201,15 @@ export const MOTIONS = {
   } },
 
   Guard: { dur: 2.4, loop: true, pose(rig, u) {
-    // Behind the shield: side on and low as for a shot, the shield stood up in front of the chest and the head, the gun held
-    // low beside it, still on the target. It holds there and breathes: a stance to stay in for as long as the blows keep coming.
+    // Behind the shield, in the stance the owner picked: side on and low as for a shot, the shield across the chest as it is
+    // held to fire, the gun let down at the right side. It holds there and breathes: a stance to stay in while the blows keep coming.
     const D = rig.D, b = Math.sin(TAU * u), b2 = Math.sin(TAU * u + 1.2);
     rig.hips(0.04, -0.40 - 0.02 * (0.5 - 0.5 * Math.cos(TAU * u)), 0.04, 0.14, -0.70, 0);
     rig.rot('spine', 0.06 + 0.01 * b, -0.10, 0); rig.rot('chest', 0.06 + 0.01 * b, -0.08, 0);
     rig.rot('head', -0.10, 0.82 + 0.05 * b2, 0, 'YXZ');
     rig.pads(0, 0.012 * b, 0, 0.012 * b);
-    rig.arm('L', { fwd: 1.45 + 0.02 * b, across: 0.90, elbow: 1.90, roll: -0.2 });
-    rig.aim('R', { out: 0.12, elbow: 0.95 + 0.02 * b2 }, [0, -0.28, 1]);
+    rig.arm('L', { fwd: 1.05 + 0.02 * b, out: 0.10, across: 0.55, elbow: 1.25, roll: -0.3 });
+    rig.arm('R', { fwd: 0.25 + 0.02 * b2, out: 0.18, elbow: 1.05 });
     rig.leg('L', D.stance, D.footH, 0.85, 0, 0.10, 0.25); rig.leg('R', -(D.stance + 0.20), D.footH, -0.78, 0, -0.90, 0.25);
     rig.whip(0.03 * b2, 0.02 * b); rig.flame(0); rig.skirts();
   } },
