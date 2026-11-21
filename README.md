@@ -36,7 +36,7 @@ This look was chosen on the board on 20 November 2026 and is the default. The fo
 | Edge lines | Off |
 | Tour through the motions | Off |
 
-A slider's number is a multiple of the chosen look. In the model's own numbers that look is bulk 1.25, shoulders 0.81, legs 0.85 and head 1.12, which is `BUILD_BASE` in `src/frames/heavy.js`; `BUILD_DEFAULT` in `src/bench.js` is the four ones. Each slider has 1.00 in the middle of its travel and runs from 0.80 to 1.20. Below 1.00 the bulk slider brings the hips in in step with the pelvis, and the feet with them, so a thin build keeps its thighs under its hips; above 1.00 the hips go out more slowly than the body widens. The mech holds together in all ten motions at the ends and the corners of that range.
+A slider's number is a multiple of the chosen look. In the model's own numbers that look is bulk 1.25, shoulders 0.81, legs 0.85 and head 1.12, which is `BUILD_BASE` in `src/frames/heavy.js`; `BUILD_DEFAULT` in `src/bench.js` is the four ones. Each slider has 1.00 in the middle of its travel and runs from 0.80 to 1.20. Below 1.00 the bulk slider brings the hips in in step with the pelvis and draws the legs in fast: the feet stand less far out from the hips and the knees turn out less, so that at 0.80 the thighs close up against the block between the legs. Above 1.00 the hips go out more slowly than the body widens. The mech holds together in all ten motions at the ends and the corners of that range.
 
 The paint is the first entry of `PALETTES` in `src/bench.js`. The board's sliders still move all four, and its paint buttons still offer slate, desert and night.
 

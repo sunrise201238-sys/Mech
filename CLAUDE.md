@@ -38,6 +38,9 @@ anything written here.
 - When reporting a position, a shape or a layout, show a picture of it.
 - During long work, say in a few words what is being done, then continue.
 - Write about people in neutral words: they and them; in Chinese 製作者 or 你.
+- Do not name choices 甲乙丙丁: "i hate 甲乙丙丁".
+- Be quick: "make it snappy. i dont have 30 mins everytime just for a change." Check what a change touches, not
+  everything, and come back in minutes.
 
 ## Deciding what to do
 
@@ -83,8 +86,10 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   numbers, `BUILD_DEFAULT` in `src/bench.js` is the four ones, and `src/main.js` sets how far each slider travels.
   Change a default only on the owner's word.
 - Of the bulk slider the owner said on 2026-11-21: "When the fat/thin lever goes thin, the thighs positions should go
-  inner." So below 1 the hips come in in step with the pelvis, and the feet with them: a thin build keeps its thighs under
-  its hips. At 1 and above the hips stand where they did.
+  inner." Moving the hips alone was not enough: "I don't feel it." What they meant: "The gap between thighs and crotch are
+  still there." So below 1 the hips come in in step with the pelvis and the legs draw in fast, the feet standing less far
+  out and the knees turning out less (`spread` in `src/frames/heavy.js`), until at 0.80 the thighs close up against the
+  block between the legs. That block keeps its width. At 1 and above nothing changed.
 - The serial stencilled on Heavy mech 03 reads `AV-098`. Keep it as it is, and do not explain it anywhere.
 - A motion has to look as if the machine means it. Of the first firing pose the owner said: "looks dumb; like it's standing
   still without any recoil absorbing stance or tactical posing." They picked a braced stance, side on behind the shield.

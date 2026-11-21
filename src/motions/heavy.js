@@ -61,7 +61,7 @@ export function makeRig(mech) {
     V.set(x, y, z).sub(hipPos).applyQuaternion(inv);
     const d = clamp(V.length(), Math.abs(L1 - L2) + 0.02, L1 + L2 - 0.004);
     n.copy(V).normalize();
-    const a = yaw + s * kneeOut;
+    const a = yaw + s * kneeOut * D.spread;                                          // a thin build turns its knees out less
     f.set(Math.sin(a), 0.45, Math.cos(a)).applyQuaternion(inv);                      // where the knee tends: forward and a little up
     fp.copy(f).addScaledVector(n, -f.dot(n)); if (fp.lengthSq() < 1e-6) fp.set(0, 0, 1); fp.normalize();
     const al = Math.acos(clamp((L1 * L1 + d * d - L2 * L2) / (2 * L1 * d), -1, 1));
