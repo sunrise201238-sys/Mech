@@ -1,16 +1,19 @@
-// main.js — the Mech Board: the mech on a concrete apron under an overcast sky, its motions on buttons, its build on sliders.
+// main.js — the Mech Board: the mech on a concrete apron under an overcast sky, its motions on buttons, its weapons to mount
+// or lay out, its build on sliders.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { buildMech, setPalette, PALETTES, BUILD_DEFAULT, MOTIONS, walkSpeed } from './mech.js';
+import { buildMech, buildRack, setPalette, PALETTES, BUILD_DEFAULT, MODEL, MOTIONS, walkSpeed } from './mech.js';
 import { bakeAll } from './anim.js';
 
 const $ = (s) => document.querySelector(s);
 document.documentElement.lang = 'zh-Hant';
 const q = new URLSearchParams(location.search);
-const LABEL = { Idle: '待機', Walk: '走路', Sprint: '衝刺', Shoot: '開槍', Cannon: '主砲', Dodge: '閃避', Guard: '防禦', Jump: '跳躍', Win: '勝利' };
-const state = { motion: q.get('m') || 'Idle', speed: 1, palette: q.get('p') || 'olive', build: { ...BUILD_DEFAULT }, edges: false, fx: true, spin: false, paused: false, tour: false, frame: q.get('frame') === '1' };     // the tour through the motions starts only when its button is pressed
+const LABEL = { Idle: '待機', Walk: '走路', Sprint: '衝刺', Shoot: '開槍', Cannon: '主砲', Missile: '飛彈', Dodge: '閃避', Guard: '防禦', Jump: '跳躍', Win: '勝利' };
+const ARMS = { cannon: '主砲', 'missile pod': '飛彈莢艙', shield: '盾牌', rifle: '槍' };       // the weapons' names on the board
+const state = { motion: q.get('m') || 'Idle', speed: 1, palette: q.get('p') || 'olive', build: { ...BUILD_DEFAULT }, edges: false, fx: true, spin: false, paused: false, tour: false, frame: q.get('frame') === '1',
+  rack: q.get('rack') === '1', off: new Set((q.get('off') || '').split(',').filter(Boolean)) };     // the tour starts only when its button is pressed; off: the weapons not carried
 let tourAt = 0;
 
 // ------------------------------------------------------------ the stage
@@ -88,7 +91,7 @@ const holder = new THREE.Group(); scene.add(holder);
 function rebuild() {
   const keep = current ? current.time : 0;
   if (mech) { holder.remove(mech.root); mech.root.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); if (mech.mats.decal.map) mech.mats.decal.map.dispose(); }
-  mech = buildMech(state.build, PALETTES[state.palette], { frameOnly: state.frame });     // the frame alone, or the whole mech
+  mech = buildMech(state.build, PALETTES[state.palette], { frameOnly: state.frame, without: [...state.off] });     // the frame alone, or the mech with what it carries
   mech.root.traverse((o) => { if (o.isMesh && o.userData.fx) o.castShadow = false; });
   holder.add(mech.root);
   const baked = bakeAll(mech); clips = baked.clips;
@@ -99,9 +102,13 @@ function rebuild() {
   }
   mixer.addEventListener('finished', (e) => { if (e.action !== current) return; if (state.tour) tourAt = performance.now() + 550; else replay = performance.now() + 650; });
   measure();
+  if (!can(state.motion)) state.motion = 'Idle';
   current = null; play(state.motion, 0); if (current) current.time = Math.min(keep, current.getClip().duration);
-  applyToggles(); stats();
+  showRack(); stats();
 }
+// A firing motion is the frame's, and a weapon is bound to it: it can be played only while that weapon is carried. Every
+// other motion is the frame's own and always there. Guard is one of those, whether or not a shield is carried.
+const can = (name) => !MOTIONS[name].fire || mech.gear.some((g) => g.motion === name);
 // how high each motion reaches, and from that the view it needs
 const solidBox = new THREE.Box3(), partBox = new THREE.Box3();
 function solidTop() {
@@ -120,19 +127,43 @@ function measure() {
   mixer.update(0);
 }
 function play(name, fade = 0.16) {
-  if (!actions[name]) return;
+  if (!actions[name] || !can(name)) return;
   const next = actions[name]; replay = 0;
   next.reset(); next.enabled = true; next.setEffectiveWeight(1); next.play();
   if (current && current !== next && fade > 0) current.crossFadeTo(next, fade, false); else if (current && current !== next) current.stop();
   current = next; state.motion = name;
   tourAt = state.tour && MOTIONS[name].loop ? performance.now() + Math.max(3400, 2 * MOTIONS[name].dur * 1000) / state.speed : 0;
   for (const b of document.querySelectorAll('[data-motion]')) b.classList.toggle('on', b.dataset.motion === name);
-  const lab = $('#now'); if (lab) lab.textContent = LABEL[name] + '　' + name;
+  for (const b of document.querySelectorAll('[data-fires]')) b.classList.toggle('on', b.dataset.fires === name && !b.disabled);
+  label();
 }
+const label = () => { const lab = $('#now'); if (lab) lab.textContent = state.rack ? '武器陳列' : LABEL[state.motion] + '　' + state.motion; };
 function applyToggles() {
   for (const h of mech.edges) h.visible = state.edges;
   for (const f of mech.fx) f.visible = state.fx;
+  if (rack) for (const h of rack.edges) h.visible = state.edges;
   controls.autoRotate = state.spin;
+}
+
+// ------------------------------------------------------------ the weapons laid out on their own
+let rack = null; const tags = [], tagAt = new THREE.Vector3(), UP = new THREE.Vector3(0, 1, 0);
+function showRack() {
+  if (rack) { holder.remove(rack.root); rack.root.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); if (rack.mats.decal.map) rack.mats.decal.map.dispose(); rack = null; }
+  for (const d of tags) d.remove(); tags.length = 0;
+  if (state.rack) {
+    rack = buildRack(state.build, PALETTES[state.palette]);
+    rack.turn = Math.atan2(camera.position.x - controls.target.x, camera.position.z - controls.target.z); rack.root.rotation.y = rack.turn;     // the row faces whoever is looking
+    rack.root.traverse((o) => { if (o.isMesh && o.userData.fx) o.castShadow = false; });
+    holder.add(rack.root);
+    for (const s of rack.stands) { const d = document.createElement('div'); d.className = 'tag'; d.textContent = ARMS[s.weapon.name]; canvas.parentElement.append(d); tags.push(d); }
+  }
+  mech.root.visible = !state.rack;
+  applyToggles(); label();
+}
+// the view the row needs: all of it in the picture, with room above it for the names
+function rackFrame() {
+  const half = REST_DIST * Math.tan(camera.fov * Math.PI / 360), top = rack.height + 1.3, bottom = -0.9;
+  return { zoom: Math.min(1.3, half * camera.aspect / (rack.width / 2 + 0.9), 2 * half / (top - bottom)), lift: (top + bottom) / 2 - REST_Y };
 }
 function stats() {
   let parts = 0, tris = 0;
@@ -141,7 +172,7 @@ function stats() {
   mech.root.traverse((o) => { if (o.isMesh && !o.userData.fx) { if (!o.geometry.boundingBox) o.geometry.computeBoundingBox(); box.union(one.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld)); } });
   const hgt = box.max.y - Math.max(0, box.min.y);
   const b = state.build;
-  $('#stat').innerHTML = [`裝甲與零件 ${mech.parts} 塊`, `關節 ${Object.keys(mech.joints).length} 個`, `三角形 ${Math.round(tris).toLocaleString()} 個`, `動作 ${clips.length} 個`, `全高 ${hgt.toFixed(2)}`].map((t) => `<span>${t}</span>`).join(' ');
+  $('#stat').innerHTML = [`裝甲與零件 ${mech.parts} 塊`, `關節 ${Object.keys(mech.joints).length} 個`, `三角形 ${Math.round(tris).toLocaleString()} 個`, `動作 ${clips.filter((c) => can(c.name)).length} 個`, `全高 ${hgt.toFixed(2)}`].map((t) => `<span>${t}</span>`).join(' ');
   $('#nums').value = `bulk ${b.bulk.toFixed(2)}  shoulders ${b.shoulders.toFixed(2)}  legs ${b.legs.toFixed(2)}  head ${b.head.toFixed(2)}  palette ${state.palette}`;
 }
 
@@ -151,10 +182,10 @@ const smooth = (t) => { t = Math.min(1, Math.max(0, t)); return t * t * (3 - 2 *
 function frame() {
   const raw = Math.min(clock.getDelta(), 0.05), dt = raw * (state.paused ? 0 : state.speed);
   if (mixer) mixer.update(dt);
-  easeFrame(framing[state.motion], 1 - Math.exp(-5 * raw));
+  easeFrame(rack ? rackFrame() : framing[state.motion], 1 - Math.exp(-5 * raw));
   if (replay && performance.now() > replay && current) { replay = 0; current.reset().play(); }
-  if (state.tour && tourAt && performance.now() > tourAt && !state.paused) { const names = Object.keys(MOTIONS); play(names[(names.indexOf(state.motion) + 1) % names.length]); }
-  if (mech && current) {
+  if (state.tour && tourAt && performance.now() > tourAt && !state.paused) { const names = Object.keys(MOTIONS).filter(can); play(names[(names.indexOf(state.motion) + 1) % names.length]); }
+  if (mech && current && !rack) {
     const D = mech.dims, def = MOTIONS[state.motion], u = current.time / def.dur;
     let vz = 0, y = 0, x = 0;
     if (state.motion === 'Walk') vz = walkSpeed(D);                                         // the ground goes by as fast as a planted foot slides
@@ -173,6 +204,9 @@ function frame() {
   }
   controls.update();
   renderer.render(scene, camera);
+  // each weapon's name rides over it
+  if (rack) rack.stands.forEach((s, i) => { tagAt.set(s.at, s.tall + 0.3, 0).applyAxisAngle(UP, rack.turn).project(camera);
+    tags[i].style.transform = `translate(${((tagAt.x + 1) / 2 * canvas.clientWidth).toFixed(1)}px, ${((1 - tagAt.y) / 2 * canvas.clientHeight).toFixed(1)}px) translate(-50%, -100%)`; });
   requestAnimationFrame(frame);
 }
 function resize() {
@@ -186,14 +220,23 @@ function ui() {
   const mo = $('#motions');
   for (const name of Object.keys(MOTIONS)) {
     const b = document.createElement('button'); b.type = 'button'; b.className = 'pill'; b.dataset.motion = name;
-    b.innerHTML = `<b>${LABEL[name]}</b><i>${name}</i>`; b.addEventListener('click', () => { state.tour = false; play(name); marks(); }); mo.append(b);
+    b.innerHTML = `<b>${LABEL[name]}</b><i>${name}</i>`; b.addEventListener('click', () => { state.tour = false; state.rack = false; showRack(); play(name); marks(); }); mo.append(b);
+  }
+  // The weapons, one row each: its name plays the motion it is bound to, and the switch beside it mounts it or takes it off.
+  const ar = $('#arms');
+  for (const w of MODEL.weapons) {
+    const row = document.createElement('div'); row.className = 'arm';
+    row.innerHTML = `<button type="button" class="pill" data-arm="${w.name}" data-fires="${w.motion}"><b>${ARMS[w.name]}</b><i>${LABEL[w.motion]}</i></button><button type="button" class="chip" data-mount="${w.name}">裝上</button>`;
+    row.querySelector('[data-arm]').addEventListener('click', () => { state.tour = false; state.rack = false; showRack(); play(w.motion); marks(); });
+    row.querySelector('[data-mount]').addEventListener('click', () => { if (state.off.has(w.name)) state.off.delete(w.name); else state.off.add(w.name); rebuild(); marks(); });
+    ar.append(row);
   }
   const pa = $('#palettes');
   for (const [key, p] of Object.entries(PALETTES)) {
     const hex = (n) => '#' + n.toString(16).padStart(6, '0');
     const b = document.createElement('button'); b.type = 'button'; b.className = 'sw'; b.dataset.palette = key; b.title = p.label;
     b.innerHTML = `<span style="background:${hex(p.armor)}"></span><span style="background:${hex(p.armor2)}"></span><span style="background:${hex(p.accent)}"></span><em>${p.label}</em>`;
-    b.addEventListener('click', () => { state.palette = key; setPalette(mech, PALETTES[key]); marks(); stats(); }); pa.append(b);
+    b.addEventListener('click', () => { state.palette = key; setPalette(mech, PALETTES[key]); if (rack) setPalette(rack, PALETTES[key]); marks(); stats(); }); pa.append(b);
   }
   const sl = $('#sliders');
   // Every slider reads 1 at the saved look and has it in the middle of its travel: a fifth less to a fifth more. The mech was
@@ -209,9 +252,9 @@ function ui() {
   }
   const sp = $('#speed'), spo = $('#speedOut');
   sp.addEventListener('input', () => { state.speed = Number(sp.value); spo.textContent = state.speed.toFixed(2); });
-  for (const key of ['edges', 'fx', 'spin', 'tour', 'frame']) {
+  for (const key of ['edges', 'fx', 'spin', 'tour', 'frame', 'rack']) {
     const b = $(`[data-toggle="${key}"]`);
-    b.addEventListener('click', () => { state[key] = !state[key]; if (key === 'frame') rebuild(); applyToggles(); marks(); if (key === 'tour' && state.tour) play(state.motion, 0); });
+    b.addEventListener('click', () => { state[key] = !state[key]; if (key === 'frame') rebuild(); if (key === 'rack') showRack(); applyToggles(); marks(); if (key === 'tour' && state.tour) play(state.motion, 0); });
   }
   $('#reset').addEventListener('click', () => {
     state.build = { ...BUILD_DEFAULT };
@@ -227,7 +270,10 @@ function ui() {
 }
 function marks() {
   for (const b of document.querySelectorAll('[data-palette]')) b.classList.toggle('on', b.dataset.palette === state.palette);
-  for (const key of ['edges', 'fx', 'spin', 'tour', 'frame']) $(`[data-toggle="${key}"]`).classList.toggle('on', state[key]);
+  for (const key of ['edges', 'fx', 'spin', 'tour', 'frame', 'rack']) $(`[data-toggle="${key}"]`).classList.toggle('on', state[key]);
+  for (const b of document.querySelectorAll('[data-mount]')) b.classList.toggle('on', !state.off.has(b.dataset.mount));
+  for (const b of document.querySelectorAll('[data-arm]')) { b.disabled = state.frame || state.off.has(b.dataset.arm); b.classList.toggle('on', !b.disabled && b.dataset.fires === state.motion); }      // a weapon that is not on the mech cannot be fired
+  for (const b of document.querySelectorAll('[data-motion]')) b.disabled = !can(b.dataset.motion);
   $('#pause').classList.toggle('on', state.paused); $('#pause').textContent = state.paused ? '繼續' : '暫停';
 }
 
@@ -238,11 +284,15 @@ requestAnimationFrame(frame);
 // ------------------------------------------------------------ hooks for checking and for writing the model file
 window.__mb = {
   state, motions: Object.keys(MOTIONS),
+  get mech() { return mech; },
   play, setCam,
   seek(name, t) { play(name, 0); state.paused = true; current.time = t; current.paused = false; mixer.update(0); easeFrame(framing[name], 1); marks(); },
   framing,
   at(name) { mech.root.updateMatrixWorld(true); return mech.joints[name].getWorldPosition(new THREE.Vector3()).toArray(); },
   build(b) { Object.assign(state.build, b); rebuild(); },
+  mount(name, on) { if (on) state.off.delete(name); else state.off.add(name); rebuild(); marks(); },
+  rack(on) { state.rack = on; showRack(); marks(); },
+  can,
   palette(k) { state.palette = k; setPalette(mech, PALETTES[k]); marks(); },
   info() { const box = new THREE.Box3().setFromObject(mech.root); return { min: box.min.toArray(), max: box.max.toArray(), clips: clips.map((c) => [c.name, c.duration, c.tracks.length]) }; },
   async glb() {
@@ -250,7 +300,7 @@ window.__mb = {
     if (current) current.stop(); mixer.stopAllAction(); mixer.update(0);
     for (const k in mech.joints) { /* the rest pose is what the file holds */ }
     const rig = bakeAll(mech).rig; rig.reset(); MOTIONS.Idle.pose(rig, 0);                  // the file rests in the standing pose, not with its legs straight
-    const buf = await new Promise((res, rej) => new GLTFExporter().parse(mech.root, res, rej, { binary: true, animations: clips, onlyVisible: true }));
+    const buf = await new Promise((res, rej) => new GLTFExporter().parse(mech.root, res, rej, { binary: true, animations: clips.filter((c) => can(c.name)), onlyVisible: true }));
     state.edges = was.edges; applyToggles(); play(state.motion, 0);
     let s = ''; const u8 = new Uint8Array(buf); for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
     return btoa(s);

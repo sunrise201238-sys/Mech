@@ -3,6 +3,9 @@
 import * as THREE from 'three';
 import { loft, ringZ, cbox, box, cylZ, hexX, hexZ, blast, white } from '../bench.js';
 
+// How big the cannon is built. Its own numbers below are for a cannon of 1; the owner asked for a bigger one (2026-11-21).
+const SIZE = 1.3;
+
 function build(B, F) {
   const { J, M, joint, add, glowAdd, mark } = B;
   const { b } = F, pack = J.pack;
@@ -10,7 +13,8 @@ function build(B, F) {
   // over the shoulder and the barrel swings out in front
   add(pack, cbox(0.18, 0.86, 0.28, 0.03), 'frame', -0.56 * b, 0.86, -0.30, 0, 0, -0.10);
   add(pack, cbox(0.32, 0.18, 0.32, 0.03), 'frame', -0.52 * b, 0.46, -0.30);
-  const cannon = joint('cannon', pack, -0.78 * b, 1.18, -0.30, -(Math.PI / 2 + 0.10), 0, 0);
+  const cannon = joint('cannon', pack, -0.78 * b - 0.06, 1.18, -0.37, -(Math.PI / 2 + 0.10), 0, 0);      // a little out and back, to clear its post and the shoulder
+  cannon.scale.setScalar(SIZE);
   add(cannon, hexX(0.15, 0.56), 'metal', 0.08, 0, 0);
   add(cannon, loft(ringZ(-0.52, 0.30, 0.34, 0.07), ringZ(-0.36, 0.40, 0.44, 0.09), ringZ(0.72, 0.40, 0.44, 0.09), ringZ(0.92, 0.32, 0.36, 0.07)), 'armor');
   add(cannon, cbox(0.44, 0.48, 0.26, 0.05), 'frame', 0, 0, -0.34);
@@ -32,13 +36,14 @@ function build(B, F) {
   flash2.scale.setScalar(0.001);
 }
 
-// swung forward over the shoulder (deploy 0..1), its barrel swung out (unfold 0..1), kicked back along itself
+// swung forward over the shoulder (deploy 0..1), its barrel swung up and out over its hinge (unfold 0..1), kicked back along itself
 function drive(rig) {
   const J = rig.J, rest = rig.rest;
   rig.cannon = (deploy = 0, unfold = 0, kick = 0, flash = 0) => {
-    rig.rot('cannon', deploy * (Math.PI / 2 + 0.10), 0, 0); J.cannon.position.z = rest.cannon.p.z - kick;
-    rig.rot('barrel', -unfold * Math.PI, 0, 0); J.flash2.scale.setScalar(Math.max(flash, 0.001));
+    rig.rot('cannon', deploy * (Math.PI / 2 + 0.10), 0, 0); J.cannon.position.z = rest.cannon.p.z - kick * SIZE;
+    rig.rot('barrel', unfold * Math.PI, 0, 0); J.flash2.scale.setScalar(Math.max(flash, 0.001));        // up and over its hinge: the other way round it would pass through the cannon and the shoulder
   };
 }
 
-export const cannon = { name: 'cannon', build, drive };
+// it hangs on the backpack, and the frame's Cannon motion fires it
+export const cannon = { name: 'cannon', mount: 'pack', motion: 'Cannon', build, drive };

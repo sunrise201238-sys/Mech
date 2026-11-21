@@ -10,9 +10,16 @@ anything written here.
 - The plan, as the owner gave it on 2026-11-20: build more mech models over time, then make a new mech game.
 - The plan grew on 2026-11-21: "multiple skeleton frames, at least 3. Each of them uses their own motions, and their own
   armor&weapon lines choices." Every frame has the same eight motions: "Must have this eight". A ninth, Guard, was added
-  the same day: "add a defense(guarding) motion." Armour and weapon lines "will have universal and excluded": some for
+  the same day: "add a defense(guarding) motion." And a tenth: "add a new motion for missile pod. Use the cannon one
+  motion, without cannon unfolding and firing." Armour and weapon lines "will have universal and excluded": some for
   every frame, some for one. Every frame keeps all four build sliders. Which frames and how the files are stored are open:
   "We'll see". How the board shows them is left to the session: "i don't care".
+- The spirit of it, in the owner's words: 'a series called "Frame Arms" (not "Frame Arms Girls"), where mechs with all
+  different kinds of appearance and functions share the very same frame. That's the spirit.' It is a feel to work in.
+  Nothing of that series is copied.
+- A weapon belongs to a frame's firing motion: "each weapon should bind with a frame firing motion". On the board a weapon's
+  own button plays its motion, and the motion cannot be played while the weapon is off. Guard is not one of those: "we
+  will have mech without shield in the future, but they will still receive guard motion."
 - A backpack is a layer of its own: "Backpack should not be integrated with frame. There will be tons of backpack in the
   future."
 - A frame is kept light: "the principal is to keep the whole frame stuff light weighted. I don't want it to use up much
@@ -78,8 +85,11 @@ An answer, an assessment, an investigation, or anything that is not a change to 
 - The serial stencilled on Heavy mech 03 reads `AV-098`. Keep it as it is, and do not explain it anywhere.
 - A motion has to look as if the machine means it. Of the first firing pose the owner said: "looks dumb; like it's standing
   still without any recoil absorbing stance or tactical posing." They picked a braced stance, side on behind the shield.
-  Dodge lasts one second on the owner's word: "dodge motion needs to last for 1sec". For Guard they picked, out of four
-  that were tried, the one that keeps the shield across the chest as for a shot and lets the gun down at the side.
+  Dodge lasted one second on the owner's word, "dodge motion needs to last for 1sec", and then two: "extend the dodge
+  motion duration by two times". For Guard they picked, out of four that were tried, the one that keeps the shield
+  across the chest as for a shot and lets the gun down at the side.
+- On 2026-11-21 the owner asked for a bigger cannon and a bigger drum on the gun: "make the cannon bigger", "make the
+  drum mag bigger". The cannon is built at 1.3 times its first size, and the drum's radius is 0.36 where it was 0.25.
 - Two things were the wrong way round once, and the owner caught both: the ground under a walking mech must pass from its
   front to its back, and the gun's drum stands square to the barrel. Before saying a motion or a part is right, look at
   renders of it from the side and from above.

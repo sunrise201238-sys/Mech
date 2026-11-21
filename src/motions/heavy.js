@@ -87,8 +87,8 @@ export function makeRig(mech) {
   rig.whip = (x = 0, z = 0) => { rig.rot('ant', x, 0, z); };
   rig.calf = (v) => { for (const k of ['L', 'R']) J['flameC' + k].scale.set(1, Math.max(v, 0.001), 1); };
   // What a backpack or a weapon does in a motion comes from it. A frame that carries none goes through the motion without:
-  // the main thrusters' burn, the gun's flash and the cannon's swing are then nothing at all.
-  rig.flame = rig.flash = rig.cannon = () => {};
+  // the main thrusters' burn, the gun's flash, the cannon's swing and the pod's salvo are then nothing at all.
+  rig.flame = rig.flash = rig.cannon = rig.salvo = () => {};
   for (const g of mech.gear) if (g.drive) g.drive(rig);
   return rig;
 }
@@ -110,6 +110,26 @@ function gait(p, S, st, lift, D) {
 // the walk's own numbers, kept where the page can read them: the ground has to pass under the feet at the pace they tread it
 export const WALK = { dur: 1.5, st: 0.62, stride: (D) => 1.5 * (D.L1 + D.L2) / 2.2 };
 export const walkSpeed = (D) => WALK.stride(D) / (WALK.st * WALK.dur) * D.scale;
+
+// The body's part in firing what it carries on its back: it braces, takes the kick, and burns for a moment to hold its ground.
+// It gives back the moment of the shot and how hard the kick still is, for whatever is being fired.
+function backShot(rig, u) {
+  const D = rig.D, T0 = 0.50;
+  const brace = ramp(u, 0.0, 0.20) * (1 - ramp(u, 0.84, 1.0));
+  const since = u - T0, kick = since >= 0 ? Math.exp(-since * 10) * (1 - Math.exp(-since * 90)) : 0;            // up in an instant, eased away
+  const burst = ramp(u, T0, T0 + 0.02) * (1 - ramp(u, T0 + 0.06, T0 + 0.20));
+  rig.hips(0, -0.06 - 0.20 * brace + 0.05 * kick, -0.34 * kick, 0.05 + 0.10 * brace - 0.17 * kick, -0.12 + 0.08 * brace, 0);
+  rig.rot('spine', 0.04 * brace - 0.05 * kick, 0, 0); rig.rot('chest', 0.03 * brace - 0.08 * kick, 0, 0);
+  rig.rot('head', -0.05 * brace + 0.12 * kick, 0.12 - 0.12 * brace, 0, 'YXZ');
+  rig.pads(-0.10 * kick, 0.05 * kick, -0.16 * kick, 0.10 * kick);
+  // the gun arm keeps its elbow bent enough to hold the muzzle clear of the ground while the body is down in its brace
+  rig.arm('R', { fwd: 0.40 - 0.22 * brace, out: 0.14 + 0.18 * brace, across: 0.08 * (1 - brace), elbow: 1.00 - 0.12 * brace + 0.20 * kick });
+  rig.arm('L', { fwd: 0.14 + 0.30 * brace, out: 0.24 + 0.06 * brace, across: 0.18 * brace, elbow: 0.46 + 0.50 * brace + 0.15 * kick });
+  rig.leg('L', D.stance + 0.06 + 0.14 * brace, D.footH, 0.30 + 0.26 * brace, 0, 0.30, 0.25);
+  rig.leg('R', -(D.stance + 0.08 + 0.12 * brace), D.footH, -0.22 - 0.40 * brace, 0, -0.34 - 0.10 * brace, 0.25);
+  rig.whip(-0.55 * kick, 0.06 * kick); rig.flame(1.35 * burst); rig.calf(0.8 * burst);
+  return { T0, kick };
+}
 
 // Every stance here is wide and bent: the feet a long way apart, the knees turned out, the hips low between them.
 export const MOTIONS = {
@@ -151,7 +171,7 @@ export const MOTIONS = {
     rig.whip(-0.55 + 0.05 * Math.sin(TAU * u * 4), 0.03 * w); rig.flame(1.45 + 0.16 * Math.sin(TAU * u * 5) + 0.10 * Math.sin(TAU * u * 9 + 1)); rig.calf(0.9 + 0.2 * Math.sin(TAU * u * 7)); rig.skirts();
   } },
 
-  Shoot: { dur: 0.6, loop: true, pose(rig, u) {
+  Shoot: { dur: 0.6, loop: true, fire: true, pose(rig, u) {
     // three heavy shots a loop: a shot is six frames at 30 a second, so every shot bakes to the same kick and the same flash
     const D = rig.D, r = (u * 3) % 1, k = Math.exp(-r * 6.5), fl = Math.max(0, 1 - r * 5);
     // Braced to take the gun's kick: side on with the left shoulder to the target, low and leaning into the shot, the back foot
@@ -168,25 +188,24 @@ export const MOTIONS = {
     rig.whip(-0.22 * k, 0.05 * k); rig.flash(fl > 0 ? 0.6 + 0.6 * fl : 0); rig.flame(0); rig.skirts();
   } },
 
-  Cannon: { dur: 2.8, loop: false, pose(rig, u) {
-    const D = rig.D, T0 = 0.50;
-    const brace = ramp(u, 0.0, 0.20) * (1 - ramp(u, 0.84, 1.0));
+  // The cannon: it swings over the shoulder and unfolds while the body braces, fires, and folds away.
+  Cannon: { dur: 2.8, loop: false, fire: true, pose(rig, u) {
+    const { T0, kick } = backShot(rig, u);
     const dep = ramp(u, 0.05, 0.30) * (1 - ramp(u, 0.78, 0.97)), unf = ramp(u, 0.20, 0.42) * (1 - ramp(u, 0.64, 0.84));
-    const since = u - T0, kick = since >= 0 ? Math.exp(-since * 10) * (1 - Math.exp(-since * 90)) : 0;            // up in an instant, eased away
-    const fl = Math.max(0, 1.3 - Math.abs(u - (T0 + 0.012)) * 44), burst = ramp(u, T0, T0 + 0.02) * (1 - ramp(u, T0 + 0.06, T0 + 0.20));
-    rig.hips(0, -0.06 - 0.20 * brace + 0.05 * kick, -0.34 * kick, 0.05 + 0.10 * brace - 0.17 * kick, -0.12 + 0.08 * brace, 0);
-    rig.rot('spine', 0.04 * brace - 0.05 * kick, 0, 0); rig.rot('chest', 0.03 * brace - 0.08 * kick, 0, 0);
-    rig.rot('head', -0.05 * brace + 0.12 * kick, 0.12 - 0.12 * brace, 0, 'YXZ');
-    rig.pads(-0.10 * kick, 0.05 * kick, -0.16 * kick, 0.10 * kick);
-    rig.arm('R', { fwd: 0.40 - 0.22 * brace, out: 0.14 + 0.18 * brace, across: 0.08 * (1 - brace), elbow: 1.00 - 0.34 * brace + 0.20 * kick });
-    rig.arm('L', { fwd: 0.14 + 0.30 * brace, out: 0.24 + 0.06 * brace, across: 0.18 * brace, elbow: 0.46 + 0.50 * brace + 0.15 * kick });
-    rig.leg('L', D.stance + 0.06 + 0.14 * brace, D.footH, 0.30 + 0.26 * brace, 0, 0.30, 0.25);
-    rig.leg('R', -(D.stance + 0.08 + 0.12 * brace), D.footH, -0.22 - 0.40 * brace, 0, -0.34 - 0.10 * brace, 0.25);
-    rig.whip(-0.55 * kick, 0.06 * kick); rig.flame(1.35 * burst); rig.calf(0.8 * burst);
+    const fl = Math.max(0, 1.3 - Math.abs(u - (T0 + 0.012)) * 44);
     rig.cannon(dep, unf, 0.46 * kick, fl); rig.skirts();
   } },
 
-  Dodge: { dur: 1.0, loop: false, pose(rig, u) {
+  // The missile pod's salvo: the body does what it does for the cannon, and the cannon stays folded. Seven missiles leave one
+  // after another, each two frames at 30 a second, so every one bakes to the same burst.
+  Missile: { dur: 2.8, loop: false, fire: true, pose(rig, u) {
+    const { T0 } = backShot(rig, u);
+    const n = (u - T0) * 42 + 1e-6, k = n - Math.floor(n);                    // which missile it is, and how far into its two frames
+    const going = n >= 0 && n < 7, after = n >= 7 ? Math.max(0, 1 - (n - 7) * 0.9) : 0;      // the blast behind dies away over a few frames
+    rig.salvo(going ? 1.15 - 0.8 * k : 0, going ? 1.05 - 0.3 * k : 0.7 * after); rig.skirts();
+  } },
+
+  Dodge: { dur: 2.0, loop: false, pose(rig, u) {
     const D = rig.D, a = ramp(u, 0, 0.16), b = ramp(u, 0.10, 0.40), c = ramp(u, 0.62, 1.0), lean = b - c;
     rig.hips(0.34 * lean, -0.06 - 0.22 * Math.sin(Math.PI * clamp(u / 0.92, 0, 1)), 0, 0.10 * lean, -0.10, -0.30 * lean);
     rig.rot('spine', 0, 0, -0.10 * lean); rig.rot('chest', 0.05 * lean, 0.10 * lean, -0.08 * lean);

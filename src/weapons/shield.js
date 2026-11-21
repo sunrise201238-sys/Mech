@@ -18,4 +18,6 @@ function build(B, F) {
   add(shield, cbox(0.10, 0.86, 0.18, 0.02), 'frame', 0.0, -0.02, 0);
 }
 
-export const shield = { name: 'shield', build };
+// It is worn on the left forearm, and the frame's Guard motion is the one it is for. Guard is the frame's own all the same:
+// a mech that carries no shield still has it. Shown on its own it stands with its face to the front.
+export const shield = { name: 'shield', mount: 'foreL', motion: 'Guard', shown: [0, -Math.PI / 2, 0, 'XYZ'], build };

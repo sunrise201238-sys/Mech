@@ -20,7 +20,7 @@ writeFileSync('dist/index.html', `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="重裝機體 03：會動的 3D 原型。可以轉動、播放九個動作、換塗裝、改體型。">
+<meta name="description" content="重裝機體 03：會動的 3D 原型。可以轉動、播放十個動作、裝卸武器、換塗裝、改體型。">
 ${head}</head>
 <body>
 ${page.slice(cut).replace(SCRIPT, `<script src="mech-board.js?v=${stamp}"></script>`)}</body>

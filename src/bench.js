@@ -156,7 +156,7 @@ export function bench(palette) {
     d.quaternion.copy(f.quat).multiply(QZ.setFromAxisAngle(ZAX, spin)); d.position.set(u, v, 0.005).applyQuaternion(f.quat).add(f.pos); return d;
   };
 
-  // who made each joint and part: the frame 'F', the armour 'A', a weapon 'W'. mech.js fills it in as each layer is built.
+  // who made each joint and part: the frame 'F', the armour 'A', the backpack 'P', a weapon 'W'. mech.js fills it in as each layer is built.
   const made = new Map();
   return { root, J, M, fx, made, joint, add, glowAdd, mark, markOn, partOn, boltsOn, face, lay, seam, layMark };
 }
@@ -166,8 +166,11 @@ export function bench(palette) {
 // after another is first put back into its recorded order, and comes out exactly as it did when it was one piece of code.
 // A part marked hollow takes shade from its neighbours and gives none: the lifting eyes, which are rings, and the plain
 // blocks that join a frame's pieces, which must leave the look of everything round them alone.
+// A part marked off was built only to keep that order: a weapon the mech is not carrying. It goes through the tinting, so every
+// other part gets the tint it has when the weapon is there, but it shades nothing, and it is left out when the parts are joined.
 export function finish(B, record = {}) {
   const { root, M, made } = B; let J = B.J;
+  for (const m of [...B.fx]) if (m.userData.off) { m.parent.remove(m); B.fx.splice(B.fx.indexOf(m), 1); }
   const late = new Set();                                    // what was added since the record was taken
   if (record.order) for (const name in J) {
     const pattern = record.order[name] || '';
@@ -188,6 +191,7 @@ export function finish(B, record = {}) {
   const solids = [];
   root.traverse((m) => {
     if (!m.isMesh || m.userData.fx || m.userData.key === 'decal') return;
+    if (m.userData.off) { solids.push({ m, off: true, planes: [] }); return; }
     if (m.geometry.index) m.geometry = m.geometry.toNonIndexed();
     m.geometry.deleteAttribute('uv'); m.updateMatrix();
     const pos = m.geometry.attributes.position, n = pos.count, w = new Float32Array(n * 3), box = new THREE.Box3();
@@ -209,6 +213,7 @@ export function finish(B, record = {}) {
   const REACH = [[0.09, 0.45], [0.24, 0.33], [0.46, 0.22]];
   // the recorded parts take their tints first, in their order, so a part added since never shifts the tint of an older one
   for (const o of [...solids.filter((q) => !late.has(q.m)), ...solids.filter((q) => late.has(q.m))]) {
+    if (o.off) { rnd(); continue; }                                                            // it takes its turn and nothing else
     const m = o.m, key = m.userData.key, geo = m.geometry, pos = geo.attributes.position, nor = geo.attributes.normal, n = pos.count;
     const col = new Float32Array(n * 3), painted = PAINTED[key];
     const tint = painted ? 0.90 + 0.10 * rnd() : 0.94 + 0.06 * rnd();
@@ -229,6 +234,7 @@ export function finish(B, record = {}) {
     const g = J[name], byKey = {}, lines = [];
     for (const m of [...g.children]) {
       if (!m.isMesh || m.userData.fx) continue;
+      if (m.userData.off) { g.remove(m); continue; }
       const key = m.userData.key; m.updateMatrix();
       const geo = m.geometry.index ? m.geometry.toNonIndexed() : m.geometry;
       if (key !== 'decal') { parts += 1; if (PAINTED[key]) { const e = new THREE.EdgesGeometry(geo, 18); e.applyMatrix4(m.matrix); lines.push(e); } }
@@ -246,6 +252,7 @@ export function finish(B, record = {}) {
       const ls = new THREE.LineSegments(lg2, M.edge); ls.name = name + '_edges'; ls.userData.edge = true; g.add(ls); edges.push(ls);
     }
   }
+  for (const name of Object.keys(J)) if (J[name].userData.off) { if (J[name].parent) J[name].parent.remove(J[name]); delete J[name]; }
 
   return { joints: J, edges, parts };
 }

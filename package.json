@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.3.1",
   "type": "module",
-  "description": "A store of mech models, kept for future use. First in it: heavy mech 03, built from code, with nine motions",
+  "description": "A store of mech models, kept for future use. First in it: heavy mech 03, built from code, with ten motions",
   "scripts": {
     "build": "node build.mjs",
     "glb": "node tools/glb.cjs model/heavy_mech_03.glb",

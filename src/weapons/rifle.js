@@ -15,10 +15,11 @@ function build(B) {
   for (const s of [1, -1]) add(rifle, box(0.02, 0.08, 0.09), 'metal', s * 0.101, 0.40, 3.14);
   // the drum stands square to the barrel, its round faces toward the muzzle and the stock: the rounds in a drum lie along
   // its axis, and they have to point where the gun points. (Until 2026-11-20 it lay the other way, its faces to the gun's sides.)
-  add(rifle, cylZ(0.25, 0.30, 16), 'armor2', 0, 0.02, 0.76);
-  add(rifle, cylZ(0.11, 0.32, 8), 'frame', 0, 0.02, 0.76);
-  add(rifle, cylZ(0.255, 0.05, 16), 'frame', 0, 0.02, 0.76);                                                        // the band round its middle
-  add(rifle, cbox(0.18, 0.12, 0.24, 0.02), 'frame', 0, 0.21, 0.76);                                                 // the neck that feeds the gun
+  // A big drum: the owner asked for a bigger one (2026-11-21). It hangs from the same place under the gun, so it grows downward.
+  add(rifle, cylZ(0.36, 0.40, 18), 'armor2', 0, -0.09, 0.78);
+  add(rifle, cylZ(0.15, 0.42, 8), 'frame', 0, -0.09, 0.78);
+  add(rifle, cylZ(0.366, 0.06, 18), 'frame', 0, -0.09, 0.78);                                                       // the band round its middle
+  add(rifle, cbox(0.20, 0.14, 0.30, 0.02), 'frame', 0, 0.21, 0.78);                                                 // the neck that feeds the gun
   add(rifle, hull([[-0.10, 0.24, -0.44], [0.10, 0.24, -0.44], [-0.10, 0.56, -0.44], [0.10, 0.56, -0.44], [-0.08, 0.28, -1.00], [0.08, 0.28, -1.00], [-0.08, 0.52, -1.00], [0.08, 0.52, -1.00], [-0.08, 0.14, -0.92], [0.08, 0.14, -0.92]]), 'frame');
   add(rifle, box(0.08, 0.05, 1.20), 'frame', 0, 0.60, 0.30);
   add(rifle, cbox(0.15, 0.16, 0.44, 0.03), 'frame', 0, 0.70, 0.26);
@@ -37,4 +38,5 @@ function drive(rig) {
   rig.flash = (v) => { J.flash.scale.setScalar(Math.max(v, 0.001)); };
 }
 
-export const rifle = { name: 'rifle', build, drive };
+// it is held in the right hand, and the frame's Shoot motion fires it. Shown on its own it lies level, side on.
+export const rifle = { name: 'rifle', mount: 'handR', motion: 'Shoot', shown: [-Math.PI / 2, Math.PI / 2, 0, 'YXZ'], build, drive };

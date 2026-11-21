@@ -2,8 +2,8 @@
 // Run it from the repository's root, after `npm run build`.
 const { chromium } = require('playwright'); const path = require('node:path'); const fs = require('node:fs');
 const STILLS = [['1_Idle', 'Idle', 0.4, -30, 9, 19], ['2_Walk', 'Walk', 0.3, 32, 8, 19.5], ['3_Sprint', 'Sprint', 0.3, -60, 8, 21.5], ['4_Shoot', 'Shoot', 0.0, -40, 7, 22.5],
-  ['5_Cannon', 'Cannon', 1.435, -76, 6, 23], ['6_Dodge', 'Dodge', 0.45, 20, 9, 20], ['7_Guard', 'Guard', 0.6, -24, 8, 22.5], ['8_Jump', 'Jump', 0.72, -30, 7, 20],
-  ['9_Win', 'Win', 2.3, -28, 8, 20]];   // name, motion, time, turn, tilt, distance
+  ['5_Cannon', 'Cannon', 1.435, -76, 6, 25], ['6_Missile', 'Missile', 1.4667, 40, 7, 25.5], ['7_Dodge', 'Dodge', 0.9, 20, 9, 20], ['8_Guard', 'Guard', 0.6, -24, 8, 22.5],
+  ['9_Jump', 'Jump', 0.72, -30, 7, 20], ['10_Win', 'Win', 2.3, -28, 8, 21]];   // name, motion, time, turn, tilt, distance
 (async () => {
   fs.mkdirSync('shots/poster', { recursive: true });
   const b = await chromium.launch({ args: ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });

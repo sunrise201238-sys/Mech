@@ -4,7 +4,7 @@ import { heavy } from '../frames/heavy.js';
 import { heavySlab } from '../armor/heavy_slab.js';
 import { twinThruster } from '../backpacks/twin_thruster.js';
 import { cannon } from '../weapons/cannon.js';
-import { rocketPod } from '../weapons/rocket_pod.js';
+import { missilePod } from '../weapons/missile_pod.js';
 import { shield } from '../weapons/shield.js';
 import { rifle } from '../weapons/rifle.js';
 
@@ -13,7 +13,7 @@ export const HEAVY_MECH_03 = {
   frame: heavy,
   armor: heavySlab,
   backpack: twinThruster,
-  weapons: [cannon, rocketPod, shield, rifle],
+  weapons: [cannon, missilePod, shield, rifle],
 
   // This mech was first written as one piece of code, its frame, armour and weapons made joint by joint in one pass. The
   // finishing pass tints each panel in the order it meets it, and the model file is written in that order, so the order is
