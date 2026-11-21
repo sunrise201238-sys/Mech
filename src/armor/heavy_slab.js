@@ -75,23 +75,27 @@ function build(B, F) {
   // A wedge: it widens from its neck to its shoulder line, which clears the collar, and narrows to a crown that rises toward
   // the back and drops there in one steep plate. A steel nose carries the crown's line on forward and down over the face,
   // and a cheek plate each side wraps it. The nose, the cheeks and the jaw close right up to the housing of the one eye, so
-  // nothing dark is left round it, and every plate round it is sloped: none faces flat to the front.
+  // nothing dark is left round it, and every plate round it is sloped: none faces flat to the front. The housing is narrower
+  // at its top than at its foot, so the cheeks lean in toward the nose and the jaw is wider than the nose.
   const H = (x, y, z) => [x * hs, y * hs, z * hs];
   const helm = add(head, hull([H(-0.25, 0.04, -0.36), H(0.25, 0.04, -0.36), H(-0.24, 0.04, 0.14), H(0.24, 0.04, 0.14),
     H(-0.30, 0.30, -0.50), H(0.30, 0.30, -0.50), H(-0.37, 0.30, -0.26), H(0.37, 0.30, -0.26), H(-0.29, 0.30, 0.20), H(0.29, 0.30, 0.20),
     H(-0.12, 0.66, -0.28), H(0.12, 0.66, -0.28), H(-0.13, 0.58, 0.10), H(0.13, 0.58, 0.10)]), 'armor');
   add(head, hull([H(-0.14, -0.02, 0.12), H(0.14, -0.02, 0.12), H(-0.15, -0.02, 0.30), H(0.15, -0.02, 0.30), H(0, -0.02, 0.40),
-    H(-0.205, 0.102, 0.14), H(0.205, 0.102, 0.14), H(-0.205, 0.102, 0.37), H(0.205, 0.102, 0.37), H(0, 0.07, 0.47)]), 'armor2');   // the jaw: a prow under the eye, raked back to either side
+    H(-0.227, 0.102, 0.14), H(0.227, 0.102, 0.14), H(-0.227, 0.102, 0.37), H(0.227, 0.102, 0.37), H(0, 0.07, 0.47)]), 'armor2');   // the jaw: a prow under the eye, raked back to either side
   lay(face(helm, [0, 3, -0.09 * hs], [0, 0, -0.09 * hs]), cbox(0.12 * hs, 0.30 * hs, 0.05 * hs, 0.02), 'armor2', 0, 0, 0.018 * hs);   // the spine along the crown
   // the nose: a blunt cone set on the helmet's upper front, with a small eye on top of it
   const nose = add(head, hull([H(-0.14, 0.58, 0.08), H(0.14, 0.58, 0.08), H(-0.18, 0.44, 0.16), H(0.18, 0.44, 0.16), H(-0.195, 0.328, 0.20), H(0.195, 0.328, 0.20),
     H(-0.12, 0.53, 0.30), H(0.12, 0.53, 0.30), H(-0.16, 0.43, 0.36), H(0.16, 0.43, 0.36), H(-0.195, 0.328, 0.38), H(0.195, 0.328, 0.38),
     H(-0.05, 0.44, 0.58), H(0.05, 0.44, 0.58), H(-0.06, 0.37, 0.57), H(0.06, 0.37, 0.57)]), 'metal');
   lay(face(nose, [0, 3, 0.42 * hs], [0, 0, 0.42 * hs]), box(0.04 * hs, 0.055 * hs, 0.012), 'glow', 0, 0, 0.004);
+  // eyeSide is half the width of the eye's housing at a height, as frames/heavy.js makes it: 0.43 wide at its foot, 0.34 at
+  // its top. The cheeks' inner edges run along its sides, just inside them.
+  const eyeSide = (y) => 0.215 - (0.215 - 0.17) * (y - 0.0975) / 0.235, inT = eyeSide(0.34) - 0.002, inB = eyeSide(0.09) - 0.002;
   for (const s of [1, -1]) {
     // A cheek each side of the eye, rising to meet the nose. It has no flat front: a ridge stands out beside the eye, one
     // face runs in from it to the eye's housing and another rakes back from it to the helmet's side.
-    add(head, hull([H(s * 0.228, 0.34, 0.43), H(s * 0.218, 0.09, 0.45), H(s * 0.193, 0.34, 0.36), H(s * 0.193, 0.09, 0.36),
+    add(head, hull([H(s * (inT + 0.035), 0.34, 0.43), H(s * (inB + 0.025), 0.09, 0.45), H(s * inT, 0.34, 0.36), H(s * inB, 0.09, 0.36),
       H(s * 0.185, 0.05, 0.10), H(s * 0.185, 0.30, 0.14), H(s * 0.30, 0.30, 0.14), H(s * 0.25, 0.05, 0.10),
       H(s * 0.23, 0.46, 0.14), H(s * 0.17, 0.46, 0.14), H(s * 0.18, 0.44, 0.36)]), 'armor');
     seam(helm, [s * 3, 0.48 * hs, -0.14 * hs], [0, 0.48 * hs, -0.14 * hs], 0.30 * hs);                              // a line along each side plate

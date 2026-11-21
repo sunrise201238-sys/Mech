@@ -97,11 +97,13 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   here". And of the eye itself: "make the monitor bigger", then, of going further: "slightly, i might revert it". Then of
   its frame: "make the monitor's frame a bot more thicker, which would make the monitor a bit smaller." Three thicknesses
   were tried and the middle one kept: "B." And of its shape: "instead of rectangle, make it a little bit trapezoid (short
-  edge on top)". So the face is one eye in a broad steel frame, the helmet closes right up to the frame, and no plate
-  round it faces flat to the front. The frame is 0.39 by 0.235. The pane in it is 0.135 tall, 0.30 wide at its foot and
-  0.25 at its top. Before those two steps the pane was an oblong 0.31 by 0.165 in the same frame. Before the step the
-  owner said they might revert, it was 0.28 by 0.15 in a frame 0.36 by 0.22, with the helmet's plates drawn in to match:
-  commit `4bf6e99` has it so.
+  edge on top)". And of the frame, which was still an oblong round that pane: "Make the edge frame trapezoid as well". So
+  the face is one eye in a broad steel frame, both a little narrower at the top than at the foot, the frame's sides
+  parallel to the pane's. The helmet closes right up to the frame, its cheeks leaning in along the frame's sides, and no
+  plate round it faces flat to the front. The frame is 0.235 tall, 0.43 wide at its foot and 0.34 at its top. The pane in
+  it is 0.135 tall, 0.30 wide at its foot and 0.25 at its top. Before those three steps the pane was an oblong 0.31 by
+  0.165 in an oblong frame 0.39 by 0.235. Before the step the owner said they might revert, it was 0.28 by 0.15 in a
+  frame 0.36 by 0.22, with the helmet's plates drawn in to match: commit `4bf6e99` has it so.
 - On 2026-11-21 the owner asked for a bigger cannon and a bigger drum on the gun: "make the cannon bigger", "make the
   drum mag bigger". The cannon is built at 1.3 times its first size, and the drum's radius is 0.36 where it was 0.25.
 - Two things were the wrong way round once, and the owner caught both: the ground under a walking mech must pass from its
