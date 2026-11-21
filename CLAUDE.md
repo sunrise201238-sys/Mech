@@ -8,6 +8,10 @@ anything written here.
 
 - "This repo's solely purpose will be storing mech models for any future use."
 - The plan, as the owner gave it on 2026-11-20: build more mech models over time, then make a new mech game.
+- The plan grew on 2026-11-21: "multiple skeleton frames, at least 3. Each of them uses their own motions, and their own
+  armor&weapon lines choices." Every frame has the same eight motions: "Must have this eight". Armour and weapon lines
+  "will have universal and excluded": some for every frame, some for one. Every frame keeps all four build sliders. Which
+  frames and how the files are stored are open: "We'll see". How the board shows them is left to the session: "i don't care".
 - It stands alone. Do not name or describe the owner's other projects anywhere in it.
 - `main` holds the models, their source and the built board. `gh-pages` holds only the built board, which GitHub Pages
   serves at https://sunrise201238-sys.github.io/Mech/ . Nothing writes to `gh-pages` but `tools/pages.sh`.
@@ -63,9 +67,9 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   shoulders 0.81, legs 0.85, head 1.12, with olive paint, edge lines off, the tour off until its button is pressed.
 - The four build sliders, which the owner calls levers, read 1 at that look, on the owner's word the same day: "Set them
   to 1 while keeping the current appearance." Then: "Make them centered." So a slider shows a multiple of the look, with 1
-  in the middle of its travel, and runs from 0.80 to 1.20: `BUILD_BASE` in `src/mech.js` holds the four numbers,
-  `BUILD_DEFAULT` is the four ones, and `src/main.js` sets how far each slider travels. Change a default only on the
-  owner's word.
+  in the middle of its travel, and runs from 0.80 to 1.20: `BUILD_BASE` in `src/frames/heavy.js` holds the four
+  numbers, `BUILD_DEFAULT` in `src/bench.js` is the four ones, and `src/main.js` sets how far each slider travels.
+  Change a default only on the owner's word.
 - The serial stencilled on Heavy mech 03 reads `AV-098`. Keep it as it is, and do not explain it anywhere.
 - Two things were the wrong way round once, and the owner caught both: the ground under a walking mech must pass from its
   front to its back, and the gun's drum stands square to the barrel. Before saying a motion or a part is right, look at

@@ -3,8 +3,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { buildMech, setPalette, PALETTES, BUILD_DEFAULT } from './mech.js';
-import { bakeAll, MOTIONS, walkSpeed } from './anim.js';
+import { buildMech, setPalette, PALETTES, BUILD_DEFAULT, MOTIONS, walkSpeed } from './mech.js';
+import { bakeAll } from './anim.js';
 
 const $ = (s) => document.querySelector(s);
 document.documentElement.lang = 'zh-Hant';
