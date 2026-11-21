@@ -88,6 +88,10 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   Dodge lasted one second on the owner's word, "dodge motion needs to last for 1sec", and then two: "extend the dodge
   motion duration by two times". For Guard they picked, out of four that were tried, the one that keeps the shield
   across the chest as for a shot and lets the gun down at the side.
+- For the head the owner showed photographs of a helmet they like: "make its head armor more to this style", and then
+  "rework the full head if needed." So the head is a wedge of sloped plates, low at its steel nose and rising toward the
+  back, with a narrow face sunk under the nose between two cheek plates. The feel is taken from the pictures; the shape,
+  the lenses and the aerial are this mech's own.
 - On 2026-11-21 the owner asked for a bigger cannon and a bigger drum on the gun: "make the cannon bigger", "make the
   drum mag bigger". The cannon is built at 1.3 times its first size, and the drum's radius is 0.36 where it was 0.25.
 - Two things were the wrong way round once, and the owner caught both: the ground under a walking mech must pass from its
