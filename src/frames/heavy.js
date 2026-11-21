@@ -3,7 +3,7 @@
 // place on its back where a backpack hangs, the thrusters on its calves, its aerial, and what its four build sliders do.
 // Its motions are in motions/heavy.js. It is built in its own units and stood in the scene at D.scale: at the chosen look
 // the head then tops out near 5.8. A frame is kept light: it is drawn under the armour all the time.
-import { hull, ring, loft, cbox, box, cylY, cylZ, hexX, hexY, plume } from '../bench.js';
+import { hull, ring, loft, cbox, box, cylY, hexX, hexY, plume } from '../bench.js';
 import * as motions from '../motions/heavy.js';
 
 // The look that was chosen on the board (2026-11-20), in the model's own numbers: as bulky as the slider goes, narrow shoulders,
@@ -59,12 +59,12 @@ function build(B, P) {
   add(chest, hexY(0.17, 0.20, 0.18, 8), 'frame', 0, 1.08, 0.06);
 
   // ------------------------------------------------------------ head: the sensor block and its lamps, and the blade aerial
-  // The face is narrow, to look out from under a helmet's nose: a bar lens and a round one. Behind it a skull sits on the
-  // neck and holds the rest: a block each side, the left one carrying the aerial, and a block at the back.
+  // The face is one oblong eye in its housing, set back to look out of the dark under a helmet's nose. Behind it a skull sits
+  // on the neck and holds the rest: a block each side, the left one carrying the aerial, and a block at the back.
   const head = joint('head', chest, 0, 1.10, 0.08);
-  add(head, cbox(0.34 * hs, 0.16 * hs, 0.22 * hs, 0.02), 'frame', 0, 0.19 * hs, 0.27 * hs);
-  add(head, box(0.15 * hs, 0.04 * hs, 0.02), 'glow', -0.055 * hs, 0.20 * hs, 0.382 * hs);
-  add(head, cylZ(0.04 * hs, 0.03, 10), 'glow', 0.105 * hs, 0.20 * hs, 0.382 * hs);
+  add(head, cbox(0.40 * hs, 0.22 * hs, 0.18 * hs, 0.02), 'frame', 0, 0.21 * hs, 0.24 * hs);
+  add(head, cbox(0.30 * hs, 0.18 * hs, 0.05 * hs, 0.015), 'metal', 0, 0.215 * hs, 0.345 * hs);                      // the eye's housing: a helmet closes right up to it
+  add(head, box(0.20 * hs, 0.10 * hs, 0.06 * hs), 'glow', 0, 0.215 * hs, 0.350 * hs);                               // the eye: one oblong pane
   for (const s of [1, -1]) add(head, cbox(0.11 * hs, 0.20 * hs, 0.30 * hs, 0.02), 'frame', s * 0.295 * hs, 0.20 * hs, -0.12 * hs);
   add(head, cbox(0.24 * hs, 0.16 * hs, 0.14 * hs, 0.02), 'frame', 0, 0.24 * hs, -0.46 * hs);
   const ant = joint('ant', head, -0.38 * hs, 0.30 * hs, -0.14 * hs, -0.55, 0, 0);

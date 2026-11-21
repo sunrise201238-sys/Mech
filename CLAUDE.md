@@ -90,8 +90,11 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   across the chest as for a shot and lets the gun down at the side.
 - For the head the owner showed photographs of a helmet they like: "make its head armor more to this style", and then
   "rework the full head if needed." So the head is a wedge of sloped plates, low at its steel nose and rising toward the
-  back, with a narrow face sunk under the nose between two cheek plates. The feel is taken from the pictures; the shape,
-  the lenses and the aerial are this mech's own.
+  back, with a narrow face sunk under the nose between two cheek plates. The feel is taken from the pictures; the shape
+  and the aerial are this mech's own. Of its first face, a bar lens beside a round one, they said: "Does not like the front
+  view, looks stupid. Try mono monitor." and then: "make it a square/rectangle mono monitor". Of the dark left round
+  that eye: "Hate the gaps around here". Of the cheeks' flat fronts beside it: "now i hate the flat vertical face parts
+  here". So the face is one oblong eye, the helmet closes right up to it, and no plate round it faces flat to the front.
 - On 2026-11-21 the owner asked for a bigger cannon and a bigger drum on the gun: "make the cannon bigger", "make the
   drum mag bigger". The cannon is built at 1.3 times its first size, and the drum's radius is 0.36 where it was 0.25.
 - Two things were the wrong way round once, and the owner caught both: the ground under a walking mech must pass from its
@@ -119,6 +122,8 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   commit rules above.
 - A cloud session may not be able to open the live address. Then say so plainly and check GitHub's record of the Pages
   deployment instead.
+- The board keeps the mech in sight while any control is worked: "Change the site layout so the head and stuffs can be
+  adjusted and checked without needing to scrolling up and down." A wide window shows the stage and every control at once.
 - The owner also keeps the board as a claude.ai artifact named Heavy Mech Board, published from `dist/page.html` with
   `dist/mech-board.js` beside it. So far every change to the board went to both places, so that they show the same thing;
   that is how it was done, not a rule the owner stated. Never delete an artifact unless the owner asks.
