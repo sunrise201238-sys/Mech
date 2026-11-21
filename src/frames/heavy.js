@@ -62,7 +62,6 @@ function build(B, P) {
   // The face is narrow, to look out from under a helmet's nose: a bar lens and a round one. Behind it a skull sits on the
   // neck and holds the rest: a block each side, the left one carrying the aerial, and a block at the back.
   const head = joint('head', chest, 0, 1.10, 0.08);
-  add(head, cbox(0.48 * hs, 0.22 * hs, 0.60 * hs, 0.03), 'frame', 0, 0.19 * hs, -0.115 * hs);
   add(head, cbox(0.34 * hs, 0.16 * hs, 0.22 * hs, 0.02), 'frame', 0, 0.19 * hs, 0.27 * hs);
   add(head, box(0.15 * hs, 0.04 * hs, 0.02), 'glow', -0.055 * hs, 0.20 * hs, 0.382 * hs);
   add(head, cylZ(0.04 * hs, 0.03, 10), 'glow', 0.105 * hs, 0.20 * hs, 0.382 * hs);
@@ -71,6 +70,7 @@ function build(B, P) {
   const ant = joint('ant', head, -0.38 * hs, 0.30 * hs, -0.14 * hs, -0.55, 0, 0);
   add(ant, hull([[-0.014, 0, -0.07], [0.014, 0, -0.07], [-0.014, 0, 0.07], [0.014, 0, 0.07], [-0.008, 0.70, -0.02], [0.008, 0.70, -0.02], [-0.008, 0.65, 0.035], [0.008, 0.65, 0.035]]), 'armor2');
   add(ant, hexX(0.05, 0.06, 6), 'metal', 0, 0, 0);
+  add(head, cbox(0.48 * hs, 0.22 * hs, 0.60 * hs, 0.03), 'frame', 0, 0.19 * hs, -0.115 * hs);       // the skull, made last: it is not in the model's record, and so shifts no older part's tint
 
   // ------------------------------------------------------------ shoulders and arms
   for (const s of [1, -1]) {
