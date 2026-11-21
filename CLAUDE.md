@@ -94,7 +94,8 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   and the aerial are this mech's own. Of its first face, a bar lens beside a round one, they said: "Does not like the front
   view, looks stupid. Try mono monitor." and then: "make it a square/rectangle mono monitor". Of the dark left round
   that eye: "Hate the gaps around here". Of the cheeks' flat fronts beside it: "now i hate the flat vertical face parts
-  here". So the face is one oblong eye, the helmet closes right up to it, and no plate round it faces flat to the front.
+  here". And of the eye itself: "make the monitor bigger". So the face is one large oblong eye, the helmet closes right
+  up to it, and no plate round it faces flat to the front.
 - On 2026-11-21 the owner asked for a bigger cannon and a bigger drum on the gun: "make the cannon bigger", "make the
   drum mag bigger". The cannon is built at 1.3 times its first size, and the drum's radius is 0.36 where it was 0.25.
 - Two things were the wrong way round once, and the owner caught both: the ground under a walking mech must pass from its
