@@ -59,12 +59,13 @@ function build(B, P) {
   add(chest, hexY(0.17, 0.20, 0.18, 8), 'frame', 0, 1.08, 0.06);
 
   // ------------------------------------------------------------ head: the sensor block and its lamps, and the blade aerial
-  // The face is one oblong eye in its housing, set back to look out of the dark under a helmet's nose. Behind it a skull sits
-  // on the neck and holds the rest: a block each side, the left one carrying the aerial, and a block at the back.
+  // The face is one eye in a broad steel housing, a pane a little narrower at its top than at its foot, set back to look out
+  // of the dark under a helmet's nose. Behind it a skull sits on the neck and holds the rest: a block each side, the left one
+  // carrying the aerial, and a block at the back.
   const head = joint('head', chest, 0, 1.10, 0.08);
   add(head, cbox(0.42 * hs, 0.25 * hs, 0.18 * hs, 0.02), 'frame', 0, 0.215 * hs, 0.24 * hs);
   add(head, cbox(0.39 * hs, 0.235 * hs, 0.05 * hs, 0.015), 'metal', 0, 0.215 * hs, 0.345 * hs);                      // the eye's housing: a helmet closes right up to it
-  add(head, box(0.31 * hs, 0.165 * hs, 0.06 * hs), 'glow', 0, 0.215 * hs, 0.350 * hs);                               // the eye: one oblong pane
+  add(head, loft(ring(-0.0675 * hs, 0.30 * hs, 0.06 * hs), ring(0.0675 * hs, 0.25 * hs, 0.06 * hs)), 'glow', 0, 0.215 * hs, 0.350 * hs);   // the eye: one pane, 0.135 tall, 0.30 wide at its foot and 0.25 at its top
   for (const s of [1, -1]) add(head, cbox(0.11 * hs, 0.20 * hs, 0.30 * hs, 0.02), 'frame', s * 0.295 * hs, 0.20 * hs, -0.12 * hs);
   add(head, cbox(0.24 * hs, 0.16 * hs, 0.14 * hs, 0.02), 'frame', 0, 0.24 * hs, -0.46 * hs);
   const ant = joint('ant', head, -0.38 * hs, 0.30 * hs, -0.14 * hs, -0.55, 0, 0);

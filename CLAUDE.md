@@ -94,9 +94,14 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   and the aerial are this mech's own. Of its first face, a bar lens beside a round one, they said: "Does not like the front
   view, looks stupid. Try mono monitor." and then: "make it a square/rectangle mono monitor". Of the dark left round
   that eye: "Hate the gaps around here". Of the cheeks' flat fronts beside it: "now i hate the flat vertical face parts
-  here". And of the eye itself: "make the monitor bigger", then, of going further: "slightly, i might revert it". So the
-  face is one large oblong eye, the helmet closes right up to it, and no plate round it faces flat to the front. The
-  pane is 0.31 by 0.165. Before that last step it was 0.28 by 0.15, which is what a revert goes back to.
+  here". And of the eye itself: "make the monitor bigger", then, of going further: "slightly, i might revert it". Then of
+  its frame: "make the monitor's frame a bot more thicker, which would make the monitor a bit smaller." Three thicknesses
+  were tried and the middle one kept: "B." And of its shape: "instead of rectangle, make it a little bit trapezoid (short
+  edge on top)". So the face is one eye in a broad steel frame, the helmet closes right up to the frame, and no plate
+  round it faces flat to the front. The frame is 0.39 by 0.235. The pane in it is 0.135 tall, 0.30 wide at its foot and
+  0.25 at its top. Before those two steps the pane was an oblong 0.31 by 0.165 in the same frame. Before the step the
+  owner said they might revert, it was 0.28 by 0.15 in a frame 0.36 by 0.22, with the helmet's plates drawn in to match:
+  commit `4bf6e99` has it so.
 - On 2026-11-21 the owner asked for a bigger cannon and a bigger drum on the gun: "make the cannon bigger", "make the
   drum mag bigger". The cannon is built at 1.3 times its first size, and the drum's radius is 0.36 where it was 0.25.
 - Two things were the wrong way round once, and the owner caught both: the ground under a walking mech must pass from its

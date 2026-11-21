@@ -48,7 +48,7 @@ The paint is the first entry of `PALETTES` in `src/bench.js`. The board's slider
 - It is built in its own units and stood in the scene at a scale of 1.15. At the saved settings the head tops out near 6.0, the feet span 5.2 from edge to edge, and its tallest point, the top of the folded cannon, reaches 7.5.
 - Shade is baked into the vertex colours: a tint for each panel, a fall of tone down each panel, and darkening where parts crowd each other.
 - The stencil marks come from one sheet, 1024 by 512, drawn when the model is built.
-- The head is a helmet of sloped plates, a wedge that is low at its steel nose and rises toward the back. Under the nose is its one eye, a large oblong pane in a steel frame: the nose, a cheek plate each side and the jaw close right up to it, and each of them is sloped, none facing flat to the front.
+- The head is a helmet of sloped plates, a wedge that is low at its steel nose and rises toward the back. Under the nose is its one eye, a pane a little narrower at its top than at its foot, set in a broad steel frame: the nose, a cheek plate each side and the jaw close right up to the frame, and each of them is sloped, none facing flat to the front.
 - Loadout: a heavy gun in the right hand, a shield on the left forearm, a folding cannon on the right of the back, a seven tube missile pod over the left shoulder, two main thrusters and one on each calf.
 
 ### The layers
