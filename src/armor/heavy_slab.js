@@ -140,18 +140,20 @@ function build(B, F) {
   for (const s of [1, -1]) {
     const n = s > 0 ? 'L' : 'R';
     const th = J['thigh' + n], shn = J['shin' + n], ft = J['foot' + n];
-    // the front slab
-    const fs = add(th, tile([[-0.43 * b, -0.04], [0.43 * b, -0.04], [0.46 * b, -0.30], [0.37 * b, -L1 * 0.95], [-0.37 * b, -L1 * 0.95], [-0.46 * b, -0.30]], 0.10,
-      [[-0.34 * b, -0.12], [0.34 * b, -0.12], [0.37 * b, -0.32], [0.29 * b, -L1 * 0.88], [-0.29 * b, -L1 * 0.88], [-0.37 * b, -0.32]], 0.17), 'armor', 0, 0, 0.28, -0.03, 0, 0);
-    partOn(fs, box(0.62 * b, 0.014, 0.008), 'frame', 0, -0.42, 0.171); partOn(fs, box(0.54 * b, 0.014, 0.008), 'frame', 0, -L1 * 0.66, 0.171);
-    partOn(fs, tile(oct(0.30 * b, 0.20, 0.04), 0.012, oct(0.22 * b, 0.13, 0.02), 0.03), 'armor2', s * -0.12 * b, -0.26, 0.17);
-    boltsOn(fs, [[-0.28 * b, -0.18], [0.28 * b, -0.18], [-0.23 * b, -L1 * 0.82], [0.23 * b, -L1 * 0.82]], 0.17);
-    partOn(fs, box(0.44 * b, 0.07, 0.006), 'stripe', s * 0.04 * b, -L1 * 0.76, 0.173, s * 0.5);                    // a stripe low on the slab
+    // the front slab. On a thin build it narrows to the thigh under it and the inner plate thins, so the thigh can stand
+    // right against the block between the legs
+    const bt = b * (1 - 0.40 * F.tuck), pt = 1 - 0.75 * F.tuck;
+    const fs = add(th, tile([[-0.43 * bt, -0.04], [0.43 * bt, -0.04], [0.46 * bt, -0.30], [0.37 * bt, -L1 * 0.95], [-0.37 * bt, -L1 * 0.95], [-0.46 * bt, -0.30]], 0.10,
+      [[-0.34 * bt, -0.12], [0.34 * bt, -0.12], [0.37 * bt, -0.32], [0.29 * bt, -L1 * 0.88], [-0.29 * bt, -L1 * 0.88], [-0.37 * bt, -0.32]], 0.17), 'armor', 0, 0, 0.28, -0.03, 0, 0);
+    partOn(fs, box(0.62 * bt, 0.014, 0.008), 'frame', 0, -0.42, 0.171); partOn(fs, box(0.54 * bt, 0.014, 0.008), 'frame', 0, -L1 * 0.66, 0.171);
+    partOn(fs, tile(oct(0.30 * bt, 0.20, 0.04), 0.012, oct(0.22 * bt, 0.13, 0.02), 0.03), 'armor2', s * -0.12 * bt, -0.26, 0.17);
+    boltsOn(fs, [[-0.28 * bt, -0.18], [0.28 * bt, -0.18], [-0.23 * bt, -L1 * 0.82], [0.23 * bt, -L1 * 0.82]], 0.17);
+    partOn(fs, box(0.44 * bt, 0.07, 0.006), 'stripe', s * 0.04 * bt, -L1 * 0.76, 0.173, s * 0.5);                    // a stripe low on the slab
     // the outer slab, hung below the hip plate
     const tp = add(th, tile([[-0.38, -0.24], [0.38, -0.24], [0.44, -0.50], [0.32, -L1 * 0.92], [-0.32, -L1 * 0.92], [-0.44, -0.50]], 0.07,
       [[-0.28, -0.32], [0.28, -0.32], [0.33, -0.52], [0.23, -L1 * 0.84], [-0.23, -L1 * 0.84], [-0.33, -0.52]], 0.13), 'armor', s * 0.26 * b, 0, -0.02, 0, s * Math.PI / 2, 0);
     markOn(tp, 'text', 0.24, 0, -0.66, 0.13); boltsOn(tp, [[-0.22, -0.38], [0.22, -0.38], [-0.17, -L1 * 0.80], [0.17, -L1 * 0.80]], 0.13);
-    add(th, tile(oct(0.50, L1 * 0.56, 0.08), 0.05, oct(0.34, L1 * 0.40, 0.05), 0.09), 'armor2', s * -0.26 * b, -L1 * 0.56, 0, 0, s * -Math.PI / 2, 0);   // the inner plate
+    add(th, tile(oct(0.50, L1 * 0.56, 0.08), 0.05 * pt, oct(0.34, L1 * 0.40, 0.05), 0.09 * pt), 'armor2', s * -(0.26 - 0.01 * F.tuck) * b, -L1 * 0.56, 0, 0, s * -Math.PI / 2, 0);   // the inner plate
     add(th, cbox(0.42 * b, 0.32, 0.12, 0.03), 'armor2', 0, -L1 * 0.30, -0.35);
 
     // the boot: one great block that widens all the way down

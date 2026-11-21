@@ -166,7 +166,7 @@ export const MOTIONS = {
     rig.pads(-0.10, 0.04, -0.10, 0.04);
     rig.arm('R', { fwd: 1.30 + 0.02 * w2, out: 0.06, across: 0.10, elbow: 0.86 });
     rig.arm('L', { fwd: 0.90, out: 0.20, across: 0.44, elbow: 1.36 });
-    rig.leg('L', D.stance - 0.16, D.footH + 0.34 + 0.03 * w, 0.80 + 0.05 * w, 0.30, 0.10, 0.2);
+    rig.leg('L', D.stance - 0.16 * D.spread * D.spread, D.footH + 0.34 + 0.03 * w, 0.80 + 0.05 * w, 0.30, 0.10, 0.2);   // a thin build's legs are close in already: its raised shin keeps clear of the block between them
     rig.leg('R', -(D.stance - 0.10), D.footH + 0.60 - 0.03 * w, -1.00 - 0.05 * w, 0.9, -0.10, 0.2);
     rig.whip(-0.55 + 0.05 * Math.sin(TAU * u * 4), 0.03 * w); rig.flame(1.45 + 0.16 * Math.sin(TAU * u * 5) + 0.10 * Math.sin(TAU * u * 9 + 1)); rig.calf(0.9 + 0.2 * Math.sin(TAU * u * 7)); rig.skirts();
   } },

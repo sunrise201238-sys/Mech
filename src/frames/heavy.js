@@ -15,17 +15,19 @@ function sizes(P) {
   // the sliders' numbers turned back into the model's own: at 1 each is exactly the chosen look's number
   const b = P.bulk * BUILD_BASE.bulk, sh = P.shoulders * BUILD_BASE.shoulders, lg = P.legs * BUILD_BASE.legs, hd = P.head * BUILD_BASE.head;
   const s1 = 0.72 + 0.28 * sh;                    // how far the shoulders stand out
-  // How far out the hips stand. Above the chosen look they go out more slowly than the body widens. Below it they come in
-  // in step with the pelvis, so a thin build keeps its thighs under its hips.
-  const hipAt = (bb) => 0.86 * (0.6 + 0.4 * bb), hipX = b < BUILD_BASE.bulk ? hipAt(BUILD_BASE.bulk) * b / BUILD_BASE.bulk : hipAt(b);
+  // How far out the hips stand. Above the chosen look they go out more slowly than the body widens. Below it the legs move
+  // in: tuck runs from 0 at the chosen look to 1 at the slider's thin end, where each bare thigh stands right against the
+  // block between the legs, 0.31 + 0.27 * b out. The armour on a thigh narrows with tuck to make room for that.
+  const thin = Math.min(1, b / BUILD_BASE.bulk), tuck = Math.min(1, (1 - thin) * 5), wide = 0.86 * (0.6 + 0.4 * BUILD_BASE.bulk) * thin;
+  const hipX = b < BUILD_BASE.bulk ? wide + (0.33 + 0.27 * b - wide) * tuck : 0.86 * (0.6 + 0.4 * b);
   // spread: how wide the legs stand, 1 at the chosen look and above. Below it the legs draw in fast: the feet stand less far
   // out from the hips and the knees turn out less, so a thin build's thighs close up against the block between them.
-  const spread = Math.pow(Math.min(1, b / BUILD_BASE.bulk), 5);
+  const spread = Math.pow(Math.min(1, b / BUILD_BASE.bulk), 3);
   // sit: how far the hips rest below a straight leg's reach, since this machine always stands with its legs spread and bent
   const D = { footH: 0.50, L1: 1.30 * lg, L2: 1.50 * lg, hipX, hipDrop: 0.14, toe: 1.24, heel: 0.73, sit: 0.34, scale: 1.15 };
   D.hipY = D.footH + D.L2 + D.L1 + D.hipDrop - D.sit;
   D.shoulderX = 1.30 * b * s1; D.stance = D.hipX + 0.62 * spread; D.spread = spread;
-  return { P, b, sh, lg, hd, s1, cw: b * s1, L1: D.L1, L2: D.L2, hs: hd * 0.84, D };       // hs: the head's own scale
+  return { P, b, sh, lg, hd, s1, cw: b * s1, L1: D.L1, L2: D.L2, hs: hd * 0.84, tuck, D };       // hs: the head's own scale
 }
 
 function build(B, P) {
