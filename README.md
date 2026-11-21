@@ -36,7 +36,7 @@ This look was chosen on the board on 20 November 2026 and is the default. The fo
 | Edge lines | Off |
 | Tour through the motions | Off |
 
-A slider's number is a multiple of the chosen look. In the model's own numbers that look is bulk 1.25, shoulders 0.81, legs 0.85 and head 1.12, which is `BUILD_BASE` in `src/frames/heavy.js`; `BUILD_DEFAULT` in `src/bench.js` is the four ones. Each slider has 1.00 in the middle of its travel and runs from 0.80 to 1.20. Below 1.00 the bulk slider moves the legs in: at 0.80 each bare thigh of the frame stands right against the block between the legs, the feet stand half as far out from the hips and the knees turn out half as much, and the armour on the thighs narrows to make room. Above 1.00 the hips go out more slowly than the body widens. The mech holds together in all ten motions at the ends and the corners of that range.
+A slider's number is a multiple of the chosen look. In the model's own numbers that look is bulk 1.25, shoulders 0.81, legs 0.85 and head 1.12, which is `BUILD_BASE` in `src/frames/heavy.js`; `BUILD_DEFAULT` in `src/bench.js` is the four ones. Each slider has 1.00 in the middle of its travel and runs from 0.80 to 1.20. At every build each bare thigh of the frame stands right against the block between the legs, and the armour on a thigh is cut to the thigh's inner face to let it. Below 1.00 the bulk slider also narrows the stance: at 0.80 the feet stand half as far out from the hips and the knees turn out half as much. The side skirt plates hang from the belt's edge and lean out over the thighs. The mech holds together in all ten motions at the ends and the corners of that range.
 
 The paint is the first entry of `PALETTES` in `src/bench.js`. The board's sliders still move all four, and its paint buttons still offer slate, desert and night.
 
@@ -45,7 +45,7 @@ The paint is the first entry of `PALETTES` in `src/bench.js`. The board's slider
 - Rigid parts on a tree of 43 joints. There is no skin: a part never bends, it rides its joint.
 - 394 armour plates and parts. Each joint's parts are merged by material, which leaves 164 meshes and 13,033 triangles.
 - It faces +Z, its own left is +X, and it stands on y = 0.
-- It is built in its own units and stood in the scene at a scale of 1.15. At the saved settings the head tops out near 6.0, the feet span 5.2 from edge to edge, and its tallest point, the top of the folded cannon, reaches 7.5.
+- It is built in its own units and stood in the scene at a scale of 1.15. At the saved settings the head tops out near 6.0, the feet span 4.6 from edge to edge, and its tallest point, the top of the folded cannon, reaches 7.5.
 - Shade is baked into the vertex colours: a tint for each panel, a fall of tone down each panel, and darkening where parts crowd each other.
 - The stencil marks come from one sheet, 1024 by 512, drawn when the model is built.
 - The head is a helmet of sloped plates, a wedge that is low at its steel nose and rises toward the back. Under the nose is its one eye, a pane set in a broad steel frame. Both are a little narrower at the top than at the foot, and the frame's sides run parallel to the pane's. The nose, a cheek plate each side and the jaw close right up to the frame, the cheeks leaning in along its sides, and each of them is sloped, none facing flat to the front.

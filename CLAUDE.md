@@ -85,13 +85,16 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   in the middle of its travel, and runs from 0.80 to 1.20: `BUILD_BASE` in `src/frames/heavy.js` holds the four
   numbers, `BUILD_DEFAULT` in `src/bench.js` is the four ones, and `src/main.js` sets how far each slider travels.
   Change a default only on the owner's word.
-- Of the bulk slider the owner said on 2026-11-21: "When the fat/thin lever goes thin, the thighs positions should go
-  inner." Three tries fell short: "I don't feel it."; "The gap between thighs and crotch are still there."; "which part
-  do i not make myself clear? MOVE THOSE LEGS IN". The legs had been stopped where their armour met the block between
-  them, while the owner was looking at the bare frame. So below 1 the legs move in (`tuck` in `src/frames/heavy.js`)
-  until at 0.80 each bare thigh stands against that block, the stance narrows with them (`spread`), and the armour on the
-  thighs narrows to make room. The block keeps its width. At 1 and above nothing changed. Judge a change to the frame in
-  the board's 骨架 view as well as in armour.
+- Of the legs the owner said on 2026-11-21: "When the fat/thin lever goes thin, the thighs positions should go inner."
+  Three tries fell short: "I don't feel it."; "The gap between thighs and crotch are still there."; "which part do i not
+  make myself clear? MOVE THOSE LEGS IN". The legs had been stopped where their armour met the block between them, while
+  the owner was looking at the bare frame. Then: "Make the thighs stick with the crotch in every scenario." So at every
+  build each bare thigh stands right against that block (`hipX` in `src/frames/heavy.js`), and the armour on a thigh is
+  cut to the thigh's inner face to let it. The block keeps its width. Below 1 the bulk slider also narrows the stance
+  (`spread`). This moved the legs in at the chosen look too, on that word. Judge a change to the frame in the board's
+  骨架 view as well as in armour.
+- Of the side skirt plates, the same day: "The side skirt armor are floating when it's thin now." They hang from the
+  belt's edge and lean out over the thighs, at every build.
 - The serial stencilled on Heavy mech 03 reads `AV-098`. Keep it as it is, and do not explain it anywhere.
 - A motion has to look as if the machine means it. Of the first firing pose the owner said: "looks dumb; like it's standing
   still without any recoil absorbing stance or tactical posing." They picked a braced stance, side on behind the shield.

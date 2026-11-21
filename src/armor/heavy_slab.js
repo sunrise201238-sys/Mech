@@ -140,11 +140,11 @@ function build(B, F) {
   for (const s of [1, -1]) {
     const n = s > 0 ? 'L' : 'R';
     const th = J['thigh' + n], shn = J['shin' + n], ft = J['foot' + n];
-    // the front slab. On a thin build it narrows to the thigh under it and the inner plate thins, so the thigh can stand
-    // right against the block between the legs
-    const bt = b * (1 - 0.40 * F.tuck), pt = 1 - 0.75 * F.tuck;
+    // the front slab. Its inner edge is cut to the thigh's own inner face and it sits a little to the outside, so the
+    // thigh can stand right against the block between the legs
+    const bt = 0.86 * b;
     const fs = add(th, tile([[-0.43 * bt, -0.04], [0.43 * bt, -0.04], [0.46 * bt, -0.30], [0.37 * bt, -L1 * 0.95], [-0.37 * bt, -L1 * 0.95], [-0.46 * bt, -0.30]], 0.10,
-      [[-0.34 * bt, -0.12], [0.34 * bt, -0.12], [0.37 * bt, -0.32], [0.29 * bt, -L1 * 0.88], [-0.29 * bt, -L1 * 0.88], [-0.37 * bt, -0.32]], 0.17), 'armor', 0, 0, 0.28, -0.03, 0, 0);
+      [[-0.34 * bt, -0.12], [0.34 * bt, -0.12], [0.37 * bt, -0.32], [0.29 * bt, -L1 * 0.88], [-0.29 * bt, -L1 * 0.88], [-0.37 * bt, -0.32]], 0.17), 'armor', s * 0.116 * b, 0, 0.28, -0.03, 0, 0);
     partOn(fs, box(0.62 * bt, 0.014, 0.008), 'frame', 0, -0.42, 0.171); partOn(fs, box(0.54 * bt, 0.014, 0.008), 'frame', 0, -L1 * 0.66, 0.171);
     partOn(fs, tile(oct(0.30 * bt, 0.20, 0.04), 0.012, oct(0.22 * bt, 0.13, 0.02), 0.03), 'armor2', s * -0.12 * bt, -0.26, 0.17);
     boltsOn(fs, [[-0.28 * bt, -0.18], [0.28 * bt, -0.18], [-0.23 * bt, -L1 * 0.82], [0.23 * bt, -L1 * 0.82]], 0.17);
@@ -153,7 +153,7 @@ function build(B, F) {
     const tp = add(th, tile([[-0.38, -0.24], [0.38, -0.24], [0.44, -0.50], [0.32, -L1 * 0.92], [-0.32, -L1 * 0.92], [-0.44, -0.50]], 0.07,
       [[-0.28, -0.32], [0.28, -0.32], [0.33, -0.52], [0.23, -L1 * 0.84], [-0.23, -L1 * 0.84], [-0.33, -0.52]], 0.13), 'armor', s * 0.26 * b, 0, -0.02, 0, s * Math.PI / 2, 0);
     markOn(tp, 'text', 0.24, 0, -0.66, 0.13); boltsOn(tp, [[-0.22, -0.38], [0.22, -0.38], [-0.17, -L1 * 0.80], [0.17, -L1 * 0.80]], 0.13);
-    add(th, tile(oct(0.50, L1 * 0.56, 0.08), 0.05 * pt, oct(0.34, L1 * 0.40, 0.05), 0.09 * pt), 'armor2', s * -(0.26 - 0.01 * F.tuck) * b, -L1 * 0.56, 0, 0, s * -Math.PI / 2, 0);   // the inner plate
+    add(th, tile(oct(0.50, L1 * 0.56, 0.08), 0.0125, oct(0.34, L1 * 0.40, 0.05), 0.0225), 'armor2', s * -0.27 * b, -L1 * 0.56, 0, 0, s * -Math.PI / 2, 0);   // the inner plate: thin, so the thigh keeps close to the block
     add(th, cbox(0.42 * b, 0.32, 0.12, 0.03), 'armor2', 0, -L1 * 0.30, -0.35);
 
     // the boot: one great block that widens all the way down

@@ -15,11 +15,9 @@ function sizes(P) {
   // the sliders' numbers turned back into the model's own: at 1 each is exactly the chosen look's number
   const b = P.bulk * BUILD_BASE.bulk, sh = P.shoulders * BUILD_BASE.shoulders, lg = P.legs * BUILD_BASE.legs, hd = P.head * BUILD_BASE.head;
   const s1 = 0.72 + 0.28 * sh;                    // how far the shoulders stand out
-  // How far out the hips stand. Above the chosen look they go out more slowly than the body widens. Below it the legs move
-  // in: tuck runs from 0 at the chosen look to 1 at the slider's thin end, where each bare thigh stands right against the
-  // block between the legs, 0.31 + 0.27 * b out. The armour on a thigh narrows with tuck to make room for that.
-  const thin = Math.min(1, b / BUILD_BASE.bulk), tuck = Math.min(1, (1 - thin) * 5), wide = 0.86 * (0.6 + 0.4 * BUILD_BASE.bulk) * thin;
-  const hipX = b < BUILD_BASE.bulk ? wide + (0.33 + 0.27 * b - wide) * tuck : 0.86 * (0.6 + 0.4 * b);
+  // How far out the hips stand: at every build each bare thigh stands right against the block between the legs, which is
+  // 0.60 wide, and a thigh is 0.54 * b wide. The armour on a thigh is cut to the thigh's inner face to let it.
+  const hipX = 0.33 + 0.27 * b;
   // spread: how wide the legs stand, 1 at the chosen look and above. Below it the legs draw in fast: the feet stand less far
   // out from the hips and the knees turn out less, so a thin build's thighs close up against the block between them.
   const spread = Math.pow(Math.min(1, b / BUILD_BASE.bulk), 3);
@@ -27,7 +25,7 @@ function sizes(P) {
   const D = { footH: 0.50, L1: 1.30 * lg, L2: 1.50 * lg, hipX, hipDrop: 0.14, toe: 1.24, heel: 0.73, sit: 0.34, scale: 1.15 };
   D.hipY = D.footH + D.L2 + D.L1 + D.hipDrop - D.sit;
   D.shoulderX = 1.30 * b * s1; D.stance = D.hipX + 0.62 * spread; D.spread = spread;
-  return { P, b, sh, lg, hd, s1, cw: b * s1, L1: D.L1, L2: D.L2, hs: hd * 0.84, tuck, D };       // hs: the head's own scale
+  return { P, b, sh, lg, hd, s1, cw: b * s1, L1: D.L1, L2: D.L2, hs: hd * 0.84, D };       // hs: the head's own scale
 }
 
 function build(B, P) {
@@ -48,8 +46,10 @@ function build(B, P) {
     const sf = joint('skirtF' + n, hips, s * 0.62 * b, 0.22, 0.52, -0.22, 0, 0);
     const w = 0.50 * b;
     add(sf, cbox(w * 0.9, 0.10, 0.12, 0.02), 'frame', 0, 0.0, 0.03);
-    const ss = joint('skirtS' + n, hips, s * (D.hipX + 0.46 * b), 0.30, 0, 0, 0, s * 0.20);
-    add(ss, cbox(0.12, 0.12, 0.60, 0.02), 'frame', s * 0.03, 0.0, 0);
+    // the side plate hangs from the belt's edge and leans out far enough to clear the plate on the thigh's outer face
+    const sx = 0.80 * b + 0.04, lean = Math.max(0.12, Math.atan((D.hipX + 0.26 * b + 0.16 - sx) / 0.68));
+    const ss = joint('skirtS' + n, hips, s * sx, 0.30, 0, 0, 0, s * lean);
+    add(ss, cbox(0.12, 0.12, 0.60, 0.02), 'frame', s * -0.03, 0.0, 0);
   }
   joint('skirtB', hips, 0, 0.24, -0.60, 0.16, 0, 0);
 
