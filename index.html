@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="重裝機體 03：會動的 3D 原型。可以轉動、播放九個動作、換塗裝、改體型。">
+<meta name="description" content="重裝機體 03：會動的 3D 原型。可以轉動、播放十個動作、裝卸武器、換塗裝、改體型。">
 <title>Heavy Mech Board</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,6 +59,13 @@ input[type="range"]::-moz-range-thumb { width: 10px; height: 20px; background: v
 .line { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .chip { background: transparent; border: 2px solid var(--ink); padding: 7px 13px 6px; min-height: 38px; font: 700 13px/1.2 var(--zh); letter-spacing: .06em; }
 .chip:hover { background: rgba(77, 88, 52, .14); } .chip.on { background: var(--drab); color: var(--sheet); }
+.pill:disabled, .pill:disabled:hover { opacity: .36; cursor: default; background: transparent; color: var(--ink); box-shadow: none; }
+/* the weapons: a name that plays the motion bound to it, and a switch that mounts it or takes it off */
+.arms { display: grid; gap: 8px; }
+.arm { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.arm .chip { min-height: 44px; }
+/* a weapon's name over it, when the weapons are laid out */
+.tag { position: absolute; left: 0; top: 0; background: var(--ink); color: var(--sheet); padding: 4px 10px 3px; font: 700 13px/1.3 var(--zh); letter-spacing: .08em; white-space: nowrap; pointer-events: none; }
 .swatches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .sw { display: grid; grid-template-columns: 20px 20px 12px 1fr; align-items: center; gap: 0; background: transparent; border: 2px solid var(--ink); padding: 8px 10px; min-height: 44px; }
 .sw span { height: 24px; border: 2px solid var(--ink); margin-right: -2px; } .sw span:nth-child(3) { margin-right: 0; }
@@ -84,7 +91,7 @@ body.bare .wrap { padding: 0 !important; max-width: none; } body.bare .board { d
     <div class="tab">MECH BOARD</div>
     <div class="title">
       <h1>重裝機體<span>03</span></h1>
-      <p>會動的 3D 原型，軍用傾斜裝甲。拖著轉、點動作、換塗裝、拉滑桿改體型。</p>
+      <p>會動的 3D 原型，軍用傾斜裝甲。拖著轉、點動作、裝卸武器、換塗裝、拉滑桿改體型。</p>
     </div>
   </header>
   <main class="board">
@@ -108,6 +115,11 @@ body.bare .wrap { padding: 0 !important; max-width: none; } body.bare .board { d
         </div>
       </section>
       <section class="card">
+        <h2>武器</h2>
+        <div id="arms" class="arms"></div>
+        <div class="line"><button type="button" class="chip" data-toggle="rack">陳列</button></div>
+      </section>
+      <section class="card">
         <h2>塗裝</h2>
         <div id="palettes" class="swatches"></div>
       </section>
@@ -125,6 +137,6 @@ body.bare .wrap { padding: 0 !important; max-width: none; } body.bare .board { d
     </aside>
   </main>
 </div>
-<script src="mech-board.js?v=f594406a01"></script>
+<script src="mech-board.js?v=d8e2f547b1"></script>
 </body>
 </html>
