@@ -82,6 +82,9 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   in the middle of its travel, and runs from 0.80 to 1.20: `BUILD_BASE` in `src/frames/heavy.js` holds the four
   numbers, `BUILD_DEFAULT` in `src/bench.js` is the four ones, and `src/main.js` sets how far each slider travels.
   Change a default only on the owner's word.
+- Of the bulk slider the owner said on 2026-11-21: "When the fat/thin lever goes thin, the thighs positions should go
+  inner." So below 1 the hips come in in step with the pelvis, and the feet with them: a thin build keeps its thighs under
+  its hips. At 1 and above the hips stand where they did.
 - The serial stencilled on Heavy mech 03 reads `AV-098`. Keep it as it is, and do not explain it anywhere.
 - A motion has to look as if the machine means it. Of the first firing pose the owner said: "looks dumb; like it's standing
   still without any recoil absorbing stance or tactical posing." They picked a braced stance, side on behind the shield.
@@ -103,7 +106,8 @@ An answer, an assessment, an investigation, or anything that is not a change to 
   plate round it faces flat to the front. The frame is 0.235 tall, 0.43 wide at its foot and 0.34 at its top. The pane in
   it is 0.135 tall, 0.30 wide at its foot and 0.25 at its top. Before those three steps the pane was an oblong 0.31 by
   0.165 in an oblong frame 0.39 by 0.235. Before the step the owner said they might revert, it was 0.28 by 0.15 in a
-  frame 0.36 by 0.22, with the helmet's plates drawn in to match: commit `4bf6e99` has it so.
+  frame 0.36 by 0.22, with the helmet's plates drawn in to match: commit `4bf6e99` has it so. Of the head after those
+  steps the owner said: "The head is good now."
 - On 2026-11-21 the owner asked for a bigger cannon and a bigger drum on the gun: "make the cannon bigger", "make the
   drum mag bigger". The cannon is built at 1.3 times its first size, and the drum's radius is 0.36 where it was 0.25.
 - Two things were the wrong way round once, and the owner caught both: the ground under a walking mech must pass from its
